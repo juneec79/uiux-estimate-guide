@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>웹·앱 UI/UX 디자이너 견적 산정 범위 가이드</title>
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --panel: #fafafa;
+      --ink: #0a0a0a;
+      --sub: #52525b;
+      --muted: #71717a;
+      --line: #e4e4e7;
+      --line-dark: #d4d4d8;
+      --chip: #111111;
+      --chip-ink: #ffffff;
+      --soft: #ffffff;
+      --accent: #0a0a0a;
+      --title: clamp(64px, 7vw, 88px);
+      --subtitle: clamp(34px, 3.6vw, 48px);
+      --subtitle-sm: clamp(20px, 1.7vw, 24px);
+      --body: 16px;
+      --space-1: 8px;
+      --space-2: 16px;
+      --space-3: 24px;
+      --space-4: 32px;
+      --space-5: 40px;
+      --space-6: 48px;
+      --space-7: 56px;
+      --space-8: 64px;
+      --space-9: 72px;
+      --space-10: 80px;
+      --space-11: 88px;
+      --space-12: 96px;
+      --content-max: 1440px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: Inter, Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: var(--body);
+      line-height: 1.65;
+      text-align: left;
+      word-break: keep-all;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      width: min(var(--content-max), 100%);
+      margin: var(--space-8) auto;
+      padding: var(--space-7) clamp(var(--space-4), 6vw, var(--space-12)) var(--space-5);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      margin-bottom: var(--space-11);
+      font-size: var(--body);
+      font-weight: 500;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      justify-content: flex-start;
+      color: #111;
+    }
+
+    .nav a {
+      text-decoration: none;
+    }
+
+    .mode {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      white-space: nowrap;
+    }
+
+    .mode::before {
+      width: var(--space-2);
+      height: var(--space-2);
+      border: 1.5px solid #111;
+      border-radius: 0;
+      content: "";
+    }
+
+    .hero {
+      min-height: 520px;
+      padding-bottom: var(--space-9);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .kicker {
+      margin: 0 0 var(--space-2);
+      color: var(--muted);
+      font-size: var(--body);
+      font-weight: 500;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0;
+      font-size: var(--title);
+      line-height: 1.05;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .subtitle-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(260px, .72fr);
+      gap: clamp(var(--space-4), 8vw, var(--space-12));
+      align-items: start;
+      margin-top: var(--space-8);
+    }
+
+    .subtitle {
+      max-width: 620px;
+      margin: 0;
+      font-size: var(--subtitle-sm);
+      line-height: 1.42;
+      font-weight: 400;
+    }
+
+    .note {
+      max-width: 330px;
+      margin: var(--space-1) 0 0;
+      color: var(--sub);
+      font-size: var(--body);
+      line-height: 1.65;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      margin-top: var(--space-3);
+      padding: var(--space-1) var(--space-2);
+      color: var(--chip-ink);
+      background: var(--chip);
+      border-radius: 0;
+      font-size: var(--body);
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .pill::after {
+      content: "•";
+      color: var(--accent);
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    section {
+      padding: var(--space-9) 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+      margin-bottom: var(--space-5);
+    }
+
+    .num {
+      display: none;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: var(--subtitle);
+      line-height: 1.1;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: var(--subtitle-sm);
+      line-height: 1.3;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .lead {
+      max-width: 820px;
+      color: var(--sub);
+      font-size: var(--body);
+      line-height: 1.82;
+      font-weight: 300;
+    }
+
+    .big-rule {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, .62fr);
+      gap: var(--space-5);
+      align-items: end;
+      margin-top: var(--space-5);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--line-dark);
+    }
+
+    .big-rule strong {
+      display: block;
+      max-width: 760px;
+      font-size: var(--subtitle);
+      line-height: 1.2;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .big-rule p {
+      color: var(--sub);
+      font-size: var(--body);
+    }
+
+    .stack {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .principle {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, .56fr);
+      gap: var(--space-4);
+      align-items: start;
+      padding: var(--space-4) 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .principle:first-child,
+    .row:first-child {
+      border-top-color: var(--line-dark);
+    }
+
+    .tag {
+      display: none;
+    }
+
+    .principle p,
+    .row p,
+    .package p,
+    .clause p,
+    .answer p {
+      color: var(--sub);
+      font-size: 16px;
+    }
+
+    .quote {
+      padding: var(--space-2) var(--space-3);
+      color: #111;
+      background: var(--soft);
+      border-left: 3px solid var(--ink);
+      border-radius: 0;
+      font-size: var(--body);
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: minmax(220px, .72fr) minmax(0, 1fr);
+      gap: var(--space-4);
+      padding: var(--space-4) 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .row h3 {
+      font-size: var(--subtitle-sm);
+    }
+
+    .cols {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    .mini {
+      padding: var(--space-3);
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 0;
+    }
+
+    .mini h4 {
+      margin: 0 0 var(--space-2);
+      font-size: var(--body);
+      font-weight: 600;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding-left: var(--space-3);
+    }
+
+    li {
+      margin: var(--space-1) 0;
+      color: var(--sub);
+      font-size: var(--body);
+    }
+
+    .dense-list {
+      columns: 2;
+      column-gap: var(--space-6);
+      padding: var(--space-4);
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 0;
+    }
+
+    .dense-list li {
+      break-inside: avoid;
+      margin-bottom: var(--space-1);
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    .panel {
+      padding: var(--space-4);
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 0;
+    }
+
+    .panel.dark {
+      color: #fff;
+      background: #111;
+      border-color: #111;
+    }
+
+    .panel.dark li,
+    .panel.dark p {
+      color: rgba(255, 255, 255, .78);
+    }
+
+    .panel h3 {
+      margin-bottom: var(--space-2);
+      font-size: var(--subtitle-sm);
+    }
+
+    .packages {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    .package {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      min-height: 520px;
+      padding: var(--space-4);
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 0;
+    }
+
+    .package h3 {
+      font-size: var(--subtitle-sm);
+    }
+
+    .package .index {
+      color: var(--muted);
+      font-size: var(--body);
+    }
+
+    .clause-list,
+    .answer-list {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .clause,
+    .answer {
+      display: grid;
+      grid-template-columns: var(--space-5) minmax(0, 1fr);
+      gap: var(--space-2);
+      padding: var(--space-3) 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .answer h3 {
+      margin-bottom: var(--space-1);
+      font-size: var(--subtitle-sm);
+      font-weight: 500;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: var(--space-4);
+      height: var(--space-4);
+      color: #fff;
+      background: #111;
+      border-radius: 0;
+      font-size: var(--body);
+      font-weight: 600;
+    }
+
+    .final-lines {
+      display: grid;
+      gap: var(--space-2);
+      max-width: 900px;
+    }
+
+    .final-lines p {
+      font-size: var(--subtitle-sm);
+      line-height: 1.36;
+      font-weight: 400;
+    }
+
+    .strong-line {
+      margin-top: var(--space-6);
+      padding-top: var(--space-5);
+      border-top: 1px solid var(--line-dark);
+    }
+
+    .strong-line p {
+      max-width: 930px;
+      font-size: var(--subtitle);
+      line-height: 1.2;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-2);
+      padding-top: var(--space-4);
+      color: var(--muted);
+      font-size: var(--body);
+      font-weight: 500;
+    }
+
+    @media (max-width: 1200px) {
+      .shell {
+        width: min(100% - var(--space-6), var(--content-max));
+        padding-inline: var(--space-6);
+      }
+
+      .packages {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .shell {
+        width: min(100% - var(--space-4), 720px);
+        margin: var(--space-2) auto;
+        padding: var(--space-4) var(--space-3);
+        border-radius: 0;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        margin-bottom: var(--space-7);
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .hero {
+        min-height: 0;
+        padding-bottom: var(--space-6);
+      }
+
+      .subtitle-grid,
+      .section-head,
+      .big-rule,
+      .principle,
+      .row,
+      .cols,
+      .compare,
+      .packages {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: var(--space-7) 0;
+      }
+
+      .section-head {
+        gap: var(--space-2);
+      }
+
+      .principle,
+      .row {
+        gap: var(--space-2);
+      }
+
+      .dense-list {
+        columns: 1;
+        padding: var(--space-3);
+      }
+
+      .package {
+        min-height: auto;
+      }
+
+      footer {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 600px) {
+      :root {
+        --title: clamp(48px, 14vw, 64px);
+        --subtitle: clamp(30px, 9vw, 38px);
+        --subtitle-sm: clamp(20px, 6vw, 24px);
+      }
+
+      .shell {
+        width: 100%;
+        margin: 0;
+        padding: var(--space-3) var(--space-2);
+        border-left: 0;
+        border-right: 0;
+      }
+
+      .topbar {
+        flex-direction: column;
+        gap: var(--space-2);
+      }
+
+      .subtitle-grid {
+        gap: var(--space-4);
+        margin-top: var(--space-5);
+      }
+
+      .note,
+      .lead,
+      .big-rule strong,
+      .final-lines,
+      .strong-line p {
+        max-width: none;
+      }
+
+      .panel,
+      .package,
+      .mini,
+      .dense-list {
+        padding: var(--space-2);
+      }
+
+      .clause,
+      .answer {
+        grid-template-columns: 32px minmax(0, 1fr);
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .shell {
+        width: auto;
+        margin: 0;
+        padding: 18mm;
+        border: 0;
+        box-shadow: none;
+      }
+
+      .nav,
+      .pill {
+        display: none;
+      }
+
+      section,
+      .principle,
+      .row,
+      .panel,
+      .package,
+      .clause,
+      .answer {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <strong>UI/UX Estimate Guide</strong>
+      <nav class="nav" aria-label="문서 목차">
+        <a href="#complexity">Complexity</a>
+        <a href="#scope">Scope</a>
+        <a href="#formula">Formula</a>
+        <a href="#packages">Packages</a>
+        <a href="#defense">Defense</a>
+      </nav>
+      <span class="mode">Product Scope</span>
+    </header>
+
+    <section class="hero" id="top">
+      <p class="kicker">웹·앱 UI/UX 디자이너 견적 산정 범위 가이드 보강판</p>
+      <h1>화면 디자인 단가가 아니라<br>프로덕트 설계 범위와<br>전달 책임의 비용</h1>
+      <div class="subtitle-grid">
+        <p class="subtitle">
+          핵심은 “예쁜 화면 몇 장”이 아니라 서비스 구조, UX 흐름, 상태값, 반응형, 디자인 시스템, 개발 핸드오프, 리스크 관리까지 어디까지 책임지는가입니다.
+        </p>
+        <div>
+          <p class="note">
+            UI/UX 견적은 화면 수만으로 판단하지 않습니다. 복잡도, 기획 확정도, 구현 전달 수준, 검수 책임, 일정 리스크를 함께 봐야 합니다.
+          </p>
+          <a class="pill" href="#strong">최종 문장</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="premise">
+      <div class="section-head"><h2>견적 산정의 기본 전제</h2></div>
+      <p class="lead">웹·앱 UI/UX 디자인은 단순 시각 디자인이 아닙니다. 실제 업무는 서비스 목적 이해, 사용자 흐름 설계, IA와 정보구조 정리, 화면 구조 설계, UI 디자인, 컴포넌트와 상태값 설계, 반응형 설계, 접근성 고려, 개발 전달용 정리, 수정 대응, QA 또는 구현 피드백까지 포함할 수 있습니다.</p>
+      <div class="big-rule">
+        <strong>UI/UX 견적은 구조·흐름·사용성·검증·전달까지 포함할 수 있는 전문 작업 기준으로 봐야 합니다.</strong>
+        <p>NN/g가 UX를 정보구조, 인터랙션 디자인, 프로토타이핑, 사용자 테스트, UX 전략 등 디지털 제품 경험 개선 영역으로 다루는 것처럼, UI/UX는 화면 장식이 아니라 제품 설계 업무입니다.</p>
+      </div>
+    </section>
+
+    <section id="complexity">
+      <div class="section-head"><h2>화면 수보다 복잡도가 우선입니다</h2></div>
+      <div class="compare">
+        <article class="panel">
+          <h3>낮은 복잡도</h3>
+          <p>회사소개, 단순 랜딩, 이벤트 페이지, 정적 브랜드 페이지, 정보성 페이지.</p>
+          <ul>
+            <li>기능이 적음</li>
+            <li>상태값이 적음</li>
+            <li>사용자 흐름이 단순함</li>
+            <li>정책 판단이 적음</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3>중간 복잡도</h3>
+          <p>회원가입, 검색, 리스트/상세, 신청/예약, 마이페이지, 결제 전 단계, 콘텐츠 관리형 화면.</p>
+          <ul>
+            <li>입력값과 오류 상태가 있음</li>
+            <li>필터, 정렬, 사용자 행동 흐름이 있음</li>
+            <li>모바일 대응이 필요함</li>
+          </ul>
+        </article>
+        <article class="panel dark">
+          <h3>높은 복잡도</h3>
+          <p>SaaS, 관리자, B2B 업무 시스템, 대시보드, 데이터 테이블, 권한 관리, 예약/매칭/정산, 캘린더 기반 서비스.</p>
+          <ul>
+            <li>정책 이해와 예외 케이스가 많음</li>
+            <li>정보 구조와 상태값이 복잡함</li>
+            <li>개발 협업 난이도가 높음</li>
+            <li>디자인 시스템 필요성이 높음</li>
+          </ul>
+        </article>
+      </div>
+      <div class="quote">화면 수가 같아도 UX 판단, 상태값, 정책, 데이터 구조, 반응형, 개발 전달 범위에 따라 견적은 크게 달라집니다.</div>
+    </section>
+
+    <section id="scope">
+      <div class="section-head"><h2>반드시 분리해야 하는 견적 항목</h2></div>
+
+      <div class="row">
+        <h3>기획 / 분석</h3>
+        <div class="stack">
+          <p>기존 자료 분석, 요구사항 정리, 경쟁 서비스 조사, 기능 범위 파악, 사용자 니즈 정리, 화면 우선순위 설정, 문제 정의가 포함됩니다.</p>
+          <div class="cols">
+            <div class="mini"><h4>견적 영향 낮음</h4><p>기획서, IA, 정책 문서가 확정된 상태</p></div>
+            <div class="mini"><h4>견적 영향 높음</h4><p>아이디어만 있거나 디자이너가 기획을 재정리해야 하는 상태</p></div>
+          </div>
+          <div class="quote">자료가 많다는 것은 디자인 범위가 명확하다는 뜻이 아닙니다. 자료를 화면 구조로 재정리해야 한다면 UX 기획과 정보구조 설계가 별도 범위로 포함됩니다.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>IA / UX 설계</h3>
+        <div class="stack">
+          <ul>
+            <li>IA 설계, 메뉴 구조, 사용자 플로우</li>
+            <li>화면별 목적 정의, 정보 우선순위, 기능 흐름 설계</li>
+            <li>예외 케이스와 정책 흐름 정의</li>
+          </ul>
+          <p>NN/g가 정보구조를 내비게이션, 제품 내부 구조, 택소노미, 메타데이터 등으로 설명하듯 IA는 메뉴명이 아니라 사용자가 제품 안에서 정보를 찾고 이해하는 구조 전체입니다.</p>
+          <div class="quote">IA와 사용자 흐름이 없는 상태에서는 UI를 바로 그리는 것이 아니라 서비스 구조를 먼저 설계해야 합니다.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>UI 디자인</h3>
+        <div class="stack">
+          <p>주요 화면 디자인, 컴포넌트 적용, 레이아웃, 타이포그래피, 컬러 시스템, 콘텐츠 위계, 인터랙션 상태 반영이 포함됩니다.</p>
+          <ul>
+            <li>화면 수, 컴포넌트 수, 정보량</li>
+            <li>상태값, 기능 복잡도, 시각 완성도</li>
+            <li>브랜드 적용 난이도, 반응형 여부</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>상태값 설계</h3>
+        <div class="stack">
+          <ul class="dense-list">
+            <li>기본, Hover, Active, Focus, Disabled</li>
+            <li>Loading, Empty, Error, Success</li>
+            <li>권한 없음, 데이터 없음, 검색 결과 없음</li>
+            <li>네트워크 오류, 입력 오류, 결제 실패</li>
+            <li>승인 대기, 완료 상태</li>
+          </ul>
+          <div class="quote">실제 서비스 화면은 기본 화면 하나로 끝나지 않습니다. 입력, 오류, 로딩, 빈 화면, 권한 상태까지 고려해야 하므로 상태값 설계는 별도 공수로 산정되어야 합니다.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>반응형 설계</h3>
+        <div class="stack">
+          <p>반응형은 PC 화면을 줄이는 작업이 아니라 디바이스별 사용성과 정보 우선순위를 다시 설계하는 작업입니다.</p>
+          <div class="cols">
+            <div class="mini"><h4>범위 구분</h4><ul><li>Desktop only</li><li>Desktop + Mobile 주요 화면</li><li>Full Responsive</li><li>Adaptive</li></ul></div>
+            <div class="mini"><h4>포함 작업</h4><ul><li>모바일 정보 우선순위와 내비게이션 재설계</li><li>터치 영역, 이미지 크롭, 컴포넌트 재배치</li><li>테이블/필터 모바일 대응, 브레이크포인트 정의</li></ul></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>디자인 시스템 / UI Kit</h3>
+        <div class="stack">
+          <p>디자인 시스템은 화면을 꾸미기 위한 참고 자료가 아니라 제품을 일관되게 확장하기 위한 운영 기준입니다.</p>
+          <ul class="dense-list">
+            <li>컬러, 타이포그래피, 8pt spacing, Grid</li>
+            <li>Button, Input, Select, Checkbox, Radio, Tab</li>
+            <li>Modal, Toast, Tooltip, Badge, Table, Pagination</li>
+            <li>Card, Empty state, Error state, Component variants</li>
+            <li>Usage rule, 토큰, 상태값, 확장성, 접근성 기준</li>
+          </ul>
+          <div class="compare">
+            <div class="mini"><h4>Style Guide</h4><p>컬러, 폰트, 버튼 정도</p></div>
+            <div class="mini"><h4>UI Kit</h4><p>주요 컴포넌트 세트</p></div>
+            <div class="mini"><h4>Design System</h4><p>토큰, 상태값, 규칙, 확장성 포함</p></div>
+            <div class="mini"><h4>Product Design System</h4><p>운영·개발·반응형·접근성 기준 포함</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>접근성 / 사용성 기준</h3>
+        <div class="stack">
+          <p>공공, 금융, 의료, 교육, SaaS, 글로벌 서비스에서는 접근성이 중요한 견적 요소가 됩니다. WCAG 2.2는 인지 가능, 운용 가능, 이해 가능, 견고함의 4가지 원칙과 A/AA/AAA 성공 기준을 다룹니다.</p>
+          <ul>
+            <li>명도 대비, 폰트 크기, 터치 영역, Focus 상태</li>
+            <li>키보드 탐색, 오류 메시지, 폼 접근성</li>
+            <li>이미지 대체 텍스트, 모바일 조작성 검토</li>
+          </ul>
+          <div class="quote">접근성 기준까지 요구되는 경우 단순 시각 디자인을 넘어 검수 가능한 UI 기준이 필요하므로 별도 범위로 산정됩니다.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <h3>개발 핸드오프</h3>
+        <div class="stack">
+          <ul>
+            <li>Figma 파일 정리, 컴포넌트 네이밍, 상태값 정리</li>
+            <li>간격 기준, 반응형 기준, 인터랙션 설명</li>
+            <li>에셋 export, SVG 아이콘 정리, 개발자 질의 대응, 구현 QA</li>
+          </ul>
+          <div class="quote">Figma 파일 제공과 개발 구현 가이드는 다릅니다. 개발자가 바로 구현할 수 있는 수준의 상태값, 반응형, 인터랙션, 컴포넌트 기준 정리는 별도 작업입니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="market">
+      <div class="section-head"><h2>국내 단가 자료를 볼 때 주의할 점</h2></div>
+      <div class="compare">
+        <article class="panel">
+          <h3>플랫폼 평균가의 한계</h3>
+          <p>공개 플랫폼의 UI/UX 외주 가격은 단순 와이어프레임부터 커스텀 UI와 프로토타이핑까지 다양한 범위가 섞여 평균이 왜곡될 수 있습니다. 이 숫자를 웹앱, SaaS, 관리자, 디자인 시스템 작업의 기준 단가로 그대로 쓰면 안 됩니다.</p>
+        </article>
+        <article class="panel dark">
+          <h3>실무 견적 기준</h3>
+          <p>공공·산업 기준에서는 디자이너 등급별 노임단가가 별도로 공표됩니다. 실무 견적은 플랫폼 평균가보다 경력 등급, 투입 일수, 난이도, 책임 범위를 기준으로 보는 것이 안전합니다.</p>
+        </article>
+      </div>
+      <div class="quote">공개 플랫폼 평균가는 단순 외주 시장 참고용일 뿐, 시니어 UI/UX 디자이너의 웹앱·SaaS·디자인 시스템·개발 핸드오프 작업 단가를 대표하지 않습니다.</div>
+    </section>
+
+    <section id="formula">
+      <div class="section-head"><h2>견적 산정 공식</h2></div>
+      <div class="compare">
+        <article class="panel">
+          <h3>기본 공식</h3>
+          <p>총 견적 = 사전 분석 비용 + UX/IA 설계 비용 + UI 화면 디자인 비용 + 상태값 설계 비용 + 반응형 설계 비용 + 디자인 시스템 비용 + 그래픽/이미지/아이콘 제작 비용 + 프로토타입/인터랙션 비용 + 개발 핸드오프 비용 + 수정 대응 비용 + 일정 리스크 비용</p>
+        </article>
+        <article class="panel">
+          <h3>실무 계산식</h3>
+          <p>작업 공수 = 화면 수 × 화면 복잡도 × 상태값 개수 × 반응형 범위 × 기획 확정도 × 디자인 완성도 × 개발 전달 수준 × 수정 리스크</p>
+        </article>
+      </div>
+      <ul class="dense-list">
+        <li>기획 확정 / 자료 명확: 1.0</li>
+        <li>자료 많지만 구조 미정: 1.3</li>
+        <li>화면설계 없음: 1.5</li>
+        <li>기능 정책 불명확: 1.5~2.0</li>
+        <li>의사결정자 많음: 1.3~1.8</li>
+        <li>빠른 마감: 1.5~2.0</li>
+        <li>시안 2개 이상: 1.5~3.0</li>
+        <li>반응형 전체 포함: 1.5~2.0</li>
+        <li>디자인 시스템 포함: 1.5~3.0</li>
+        <li>개발 QA 포함: 별도 산정</li>
+      </ul>
+    </section>
+
+    <section id="packages">
+      <div class="section-head"><h2>견적 패키지 예시</h2></div>
+      <div class="packages">
+        <article class="package"><span class="index">1단계</span><h3>단순 UI 제작형</h3><p>기획 확정, 와이어프레임 있음, 화면 수 적음, 반응형 제한적, 상태값 적은 프로젝트.</p><h4>포함</h4><ul><li>주요 화면 UI 디자인</li><li>기본 스타일과 컴포넌트 사용</li><li>1~2회 수정</li></ul><h4>비포함</h4><ul><li>UX 기획, IA 설계</li><li>디자인 시스템, 전체 반응형, 개발 QA</li></ul></article>
+        <article class="package"><span class="index">2단계</span><h3>UX/UI 설계형</h3><p>웹앱, 모바일 앱, 신규 서비스, 화면 구조 개선이 필요한 프로젝트.</p><h4>포함</h4><ul><li>요구사항 분석, IA 정리</li><li>주요 플로우 설계, UI 디자인</li><li>주요 상태값, 기본 반응형 기준, Figma 정리</li></ul><h4>별도</h4><ul><li>브랜드 아이덴티티</li><li>고도화된 디자인 시스템, 전체 QA, 개발 문서화</li></ul></article>
+        <article class="package"><span class="index">3단계</span><h3>프로덕트 디자인형</h3><p>SaaS, B2B, 관리자, 대시보드, 데이터 기반 서비스.</p><h4>포함</h4><ul><li>서비스 구조 분석, IA/Flow</li><li>전체 화면 UI, 상태값 설계</li><li>컴포넌트 시스템, 반응형, 개발 핸드오프 기준</li></ul><h4>별도</h4><ul><li>UX 리서치, 사용자 테스트</li><li>브랜드 시스템, 고급 인터랙션, 개발 퍼블리싱 가이드</li></ul></article>
+        <article class="package"><span class="index">4단계</span><h3>브랜드 + 프로덕트 통합형</h3><p>런칭 서비스, 투자용 데모, 브랜드 웹사이트 + 앱, 고완성도 마케팅 사이트, 글로벌 서비스.</p><h4>포함</h4><ul><li>브랜드 톤앤매너</li><li>UX/UI 설계와 디자인 시스템</li><li>웹/앱 화면, 이미지/그래픽 제작</li><li>인터랙션 가이드와 개발 전달 가이드</li></ul></article>
+      </div>
+    </section>
+
+    <section id="contract">
+      <div class="section-head"><h2>견적서에 반드시 넣어야 할 조항</h2></div>
+      <div class="clause-list">
+        <div class="clause"><span class="mark">1</span><p><strong>범위 조항</strong><br>본 견적은 합의된 화면 수, 기능 범위, 디자인 범위, 수정 범위 기준으로 산정됩니다. 범위 외 화면, 기능, 상태값, 반응형, 인터랙션, 기획 변경은 추가 비용이 발생할 수 있습니다.</p></div>
+        <div class="clause"><span class="mark">2</span><p><strong>기획 변경 조항</strong><br>디자인 진행 중 기획, IA, 정책, 콘텐츠 구조가 변경될 경우 기존 작업 범위를 초과하는 재작업으로 간주합니다.</p></div>
+        <div class="clause"><span class="mark">3</span><p><strong>시안 조항</strong><br>시안 수는 단순 화면 개수가 아니라 서로 다른 디자인 방향의 개수를 의미합니다. 시안이 추가될 경우 별도 비용과 일정이 발생합니다.</p></div>
+        <div class="clause"><span class="mark">4</span><p><strong>수정 조항</strong><br>수정은 합의된 방향 내 보완을 의미합니다. 구조 변경, 기능 추가, 톤앤매너 변경, 신규 방향 제안은 추가 작업으로 산정됩니다.</p></div>
+        <div class="clause"><span class="mark">5</span><p><strong>반응형 조항</strong><br>반응형 디자인은 별도 범위입니다. PC 화면을 단순 축소하는 것이 아니라 디바이스별 정보 구조와 사용성을 재설계하는 작업입니다.</p></div>
+        <div class="clause"><span class="mark">6</span><p><strong>개발 핸드오프 조항</strong><br>Figma 파일 제공은 기본 산출물이며, 개발 구현을 위한 상세 가이드, 상태값 정의, 인터랙션 문서, QA 참여는 별도 범위입니다.</p></div>
+        <div class="clause"><span class="mark">7</span><p><strong>AI 사용 관련 조항</strong><br>AI 도구 사용 여부는 작업자의 내부 제작 방식에 해당하며, 결과물의 책임·판단·수정·품질 검수·개발 전달 범위를 대체하지 않습니다. AI 활용으로 속도가 일부 개선될 수는 있으나 단가 인하 사유가 되지 않습니다.</p></div>
+      </div>
+    </section>
+
+    <section id="questions">
+      <div class="section-head"><h2>클라이언트에게 사전에 확인할 질문</h2></div>
+      <ol class="dense-list">
+        <li>작업 대상은 웹사이트, 모바일 앱, 웹앱, SaaS, 관리자 중 무엇인가?</li>
+        <li>전체 화면 수는 몇 개인가?</li>
+        <li>기획서, IA, 와이어프레임, 정책 문서가 있는가?</li>
+        <li>콘텐츠와 카피는 확정되었는가?</li>
+        <li>브랜드 가이드가 있는가?</li>
+        <li>디자인 시스템이 필요한가?</li>
+        <li>반응형 범위는 어디까지인가?</li>
+        <li>모바일 앱이면 iOS / Android 모두 필요한가?</li>
+        <li>로그인, 결제, 예약, 검색, 필터, 알림, 권한 기능이 있는가?</li>
+        <li>상태값 설계가 필요한가?</li>
+        <li>관리자 화면이 포함되는가?</li>
+        <li>프로토타입이나 인터랙션 가이드가 필요한가?</li>
+        <li>개발 핸드오프 문서와 개발 QA 참여가 필요한가?</li>
+        <li>시안은 몇 개, 수정은 몇 회 필요한가?</li>
+        <li>최종 산출물은 Figma만인지, 문서까지 포함인지?</li>
+        <li>일정은 언제까지이고 의사결정자는 몇 명인가?</li>
+      </ol>
+    </section>
+
+    <section id="defense">
+      <div class="section-head"><h2>견적 방어용 핵심 논리</h2></div>
+      <div class="answer-list">
+        <article class="answer"><span class="mark">Q</span><div><h3>AI 쓰면 더 빨라지니까 싸져야 하는 것 아닌가요?</h3><p>AI는 초안 생성, 이미지 생성, 레이아웃 아이디어, 코드 초안에는 도움을 줄 수 있습니다. 하지만 디자이너는 여전히 문제 정의, 구조 판단, UX 흐름, 브랜드 적합성, 화면 완성도, 수정 대응, 개발 전달, 최종 품질 검수를 책임집니다. AI가 도와주는 것과 단가가 낮아지는 것은 별개입니다.</p></div></article>
+        <article class="answer"><span class="mark">Q</span><div><h3>페이지 수가 적으니 간단하지 않나요?</h3><p>페이지 수보다 중요한 것은 복잡도입니다. 한 화면 안에도 검색, 필터, 입력, 오류, 권한, 로딩, 반응형, 컴포넌트 상태가 포함되면 단순 페이지보다 훨씬 많은 설계가 필요합니다.</p></div></article>
+        <article class="answer"><span class="mark">Q</span><div><h3>일단 시안 여러 개 보고 결정하면 안 되나요?</h3><p>시안은 단순 선택지가 아니라 각각 다른 전략과 구조를 가진 별도 디자인 방향입니다. 시안 수가 늘어나면 리서치, 레이아웃, 비주얼 시스템, 컴포넌트 판단이 모두 반복되므로 일정과 비용이 함께 늘어납니다.</p></div></article>
+        <article class="answer"><span class="mark">Q</span><div><h3>자료는 다 드렸으니 디자인만 하면 되지 않나요?</h3><p>자료가 많다는 것과 기획이 정리되었다는 것은 다릅니다. 자료를 사용자 흐름, 정보 구조, 화면 위계로 재구성해야 한다면 UX 설계 작업이 포함됩니다.</p></div></article>
+      </div>
+    </section>
+
+    <section id="summary">
+      <div class="section-head"><h2>최종 요약</h2></div>
+      <div class="final-lines">
+        <p>웹·앱 UI/UX 디자인 견적은 화면 수, UX 복잡도, 기획 확정도, IA 필요 여부, 상태값 수, 반응형 범위, 디자인 시스템 범위, 접근성 기준, 개발 핸드오프 수준, 수정 리스크, 일정 리스크를 기준으로 산정해야 합니다.</p>
+      </div>
+      <div class="strong-line" id="strong">
+        <p>웹·앱 UI/UX 디자인은 화면을 예쁘게 만드는 비용이 아니라, 서비스를 사용 가능한 구조로 설계하고 개발 가능한 제품 화면으로 정리하는 비용입니다.</p>
+      </div>
+      <div class="quote">특히 웹앱, SaaS, 관리자, B2B, 대시보드, 데이터 테이블, 복잡한 신청/예약/결제 플로우는 일반 웹페이지 단가가 아니라 프로덕트 디자인 비용으로 산정해야 합니다.</div>
+    </section>
+
+    <footer>
+      <span>UI/UX Estimate Scope Guide</span>
+      <span>Product Design / Handoff / Risk</span>
+      <a href="#top">Back to top</a>
+    </footer>
+  </main>
+</body>
+</html>
