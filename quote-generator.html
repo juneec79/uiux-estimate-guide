@@ -600,6 +600,14 @@
               <option value="0.06">2~3명</option>
               <option value="0.12">4명 이상</option>
             </select></label>
+            <label class="field"><span>경력 등급</span><select name="careerGrade">
+              <option value="">선택</option>
+              <option value="0.75">초급 / 1~3년차</option>
+              <option value="1">중급 / 4~7년차</option>
+              <option value="1.35">고급 / 8~12년차</option>
+              <option value="1.8">특급 / 13년차 이상</option>
+            </select></label>
+            <label class="field"><span>실제 경력 년차</span><input type="number" min="0" name="careerYears" placeholder="0"></label>
             <label class="field"><span>일정 리스크</span><select name="deadline">
               <option value="">선택</option>
               <option value="0">정상 일정 / 가산 없음</option>
@@ -716,6 +724,7 @@
 
           <div class="total-box">
             <div class="total-line"><span>소계</span><strong id="subtotal">0원</strong></div>
+            <div class="total-line"><span>경력 등급 조정</span><strong id="careerAmount">0원</strong></div>
             <div class="total-line"><span>리스크 가중</span><strong id="riskAmount">0원</strong></div>
             <div class="total-line"><span>일정 가산</span><strong id="deadlinePremium">0원</strong></div>
             <div class="total-line"><span>PM/커뮤니케이션 비용</span><strong id="pmFee">0원</strong></div>
@@ -731,6 +740,8 @@
             <p id="includedScopes" class="empty">선택된 포함 항목이 없습니다.</p>
             <p><strong>추가 비용 발생 기준</strong></p>
             <p>화면·섹션·기능·상태값 추가, 기획/IA/콘텐츠 구조 변경, 확정 후 신규 시안 요청, 반응형 범위 추가, 이미지/그래픽/영상 수량 추가, 개발 핸드오프·QA 참여 추가, 수정 횟수 초과 시 별도 견적입니다.</p>
+            <p><strong>경력 등급 기준</strong></p>
+            <p>같은 화면 수라도 초급, 중급, 고급, 특급 등급에 따라 단가가 달라집니다. 경력 등급은 년차뿐 아니라 문제 정의, UX 판단, 시각 완성도, 개발 전달 책임, 리스크 관리 범위를 함께 기준으로 봅니다.</p>
             <p><strong>수정 정책</strong></p>
             <p>수정은 확정된 방향 안에서의 문구, 간격, 컬러, 이미지 교체 등 부분 보완에 한합니다. 레이아웃 구조, 섹션 흐름, 기능, 톤앤매너, 이미지 방향이 바뀌는 경우 신규 시안 또는 추가 작업으로 산정합니다.</p>
             <p><strong>자료 제공 및 일정 기준</strong></p>
@@ -902,6 +913,17 @@
         ]
       },
       {
+        title: "작업자 경력 등급 / 년차별 단가 기준",
+        note: "동일한 화면 수라도 작업자의 경력, 문제 정의 능력, UX 판단력, 시각 완성도, 개발 전달 책임 범위에 따라 단가는 달라집니다.",
+        table: [
+          ["경력 등급", "권장 년차", "단가 배율", "적합한 작업", "주의 기준"],
+          ["초급", "1~3년차", "기준 단가의 75%", "기획·와이어·콘텐츠가 확정된 단순 UI 보조, 일부 화면 시각화", "UX 구조 설계, 정책 판단, 개발 핸드오프 책임은 제한"],
+          ["중급", "4~7년차", "기준 단가의 100%", "일반 웹/앱 UI, 주요 플로우, 기본 상태값, 기본 반응형", "복잡한 SaaS·관리자·디자인 시스템은 별도 가산"],
+          ["고급", "8~12년차", "기준 단가의 135%", "웹앱, SaaS, 관리자, IA/Flow, 상태값, 반응형, 핸드오프 포함", "프로덕트 판단과 클라이언트 커뮤니케이션 책임 포함"],
+          ["특급", "13년차 이상", "기준 단가의 180%", "브랜드+프로덕트 통합, 복잡한 B2B, 대시보드, 디자인 시스템, 런칭 책임", "기획 재정리, 리스크 관리, 개발 전달 기준까지 포함 가능"]
+        ]
+      },
+      {
         title: "UX / IA / 기획 항목별 단가",
         table: [
           ["항목", "단위", "기준 금액", "권장 금액", "고난도 금액", "포함 범위"],
@@ -1057,6 +1079,14 @@
       return form.elements[name]?.value || "";
     }
 
+    function gradeForYears(years) {
+      if (years >= 13) return 1.8;
+      if (years >= 8) return 1.35;
+      if (years >= 4) return 1;
+      if (years >= 1) return 0.75;
+      return 1;
+    }
+
     function renderControls() {
       rateRows.innerHTML = Object.entries(rates).map(([key, [label, value]]) => `
         <tr>
@@ -1149,10 +1179,13 @@
       const date = val("issueDate") || today();
       const items = collectItems();
       const subtotal = items.reduce((sum, item) => sum + item.amount, 0);
+      const careerMultiplier = num("careerGrade") || gradeForYears(num("careerYears"));
+      const careerAmount = subtotal * (careerMultiplier - 1);
+      const careerSubtotal = subtotal + careerAmount;
       const riskFactor = num("complexity") + num("planning") + num("stakeholders");
       const cappedRiskFactor = Math.min(1 + riskFactor, 1.45);
-      const riskAmount = subtotal * (cappedRiskFactor - 1);
-      const afterRisk = subtotal + riskAmount;
+      const riskAmount = careerSubtotal * (cappedRiskFactor - 1);
+      const afterRisk = careerSubtotal + riskAmount;
       const deadlinePremium = afterRisk * num("deadline");
       const pmFee = (afterRisk + deadlinePremium) * (num("pmRate") / 100);
       const workTotal = afterRisk + deadlinePremium + pmFee;
@@ -1181,6 +1214,7 @@
       `).join("");
 
       document.getElementById("subtotal").textContent = won(subtotal);
+      document.getElementById("careerAmount").textContent = `${won(careerAmount)} (${careerMultiplier.toFixed(2)}x)`;
       document.getElementById("riskAmount").textContent = `${won(riskAmount)} (${cappedRiskFactor.toFixed(2)}x)`;
       document.getElementById("deadlinePremium").textContent = won(deadlinePremium);
       document.getElementById("pmFee").textContent = won(pmFee);
@@ -1204,6 +1238,8 @@
       form.elements.packageType.value = "B";
       form.elements.complexity.value = "0.12";
       form.elements.planning.value = "0.12";
+      form.elements.careerGrade.value = "1";
+      form.elements.careerYears.value = 6;
       form.elements.deadline.value = "0";
       form.elements.stakeholders.value = "0.06";
       form.elements.pmRate.value = 0;
