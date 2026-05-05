@@ -533,12 +533,14 @@
             </select></label>
             <label class="field"><span>일정 리스크</span><select name="deadline">
               <option value="">선택</option>
-              <option value="0">일반 일정</option>
-              <option value="0.15">촉박함</option>
-              <option value="0.3">긴급 투입</option>
+              <option value="0">정상 일정 / 가산 없음</option>
+              <option value="0.25">빠른 일정 / +25%</option>
+              <option value="0.4">긴급 일정 / +40%</option>
+              <option value="0.75">초긴급 일정 / +75%</option>
             </select></label>
             <label class="field"><span>VAT</span><select name="vatEnabled"><option value="no">미포함</option><option value="yes">10% 포함</option></select></label>
             <label class="field"><span>거래/결제 비용률</span><input type="number" min="0" max="30" name="externalFeeRate" placeholder="0"></label>
+            <label class="field"><span>PM/커뮤니케이션 비용률</span><input type="number" min="0" max="30" name="pmRate" placeholder="0"></label>
           </div>
         </section>
 
@@ -554,6 +556,21 @@
             <label class="field"><span>관리자 화면</span><input type="number" min="0" name="adminScreens" placeholder="0"></label>
             <label class="field"><span>모달/팝업</span><input type="number" min="0" name="modals" placeholder="0"></label>
             <label class="field"><span>모바일 대응 화면</span><input type="number" min="0" name="mobileScreens" placeholder="0"></label>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>일정 / 추가 비용</h2>
+            <p class="hint">주말·야간·대기·재시작·추가 수정 비용을 분리합니다.</p>
+          </div>
+          <div class="grid three">
+            <label class="field"><span>주말/공휴일 투입일</span><input type="number" min="0" name="weekendDays" placeholder="0"></label>
+            <label class="field"><span>야간 대응 건수</span><input type="number" min="0" name="nightTasks" placeholder="0"></label>
+            <label class="field"><span>자료 지연 대기일</span><input type="number" min="0" name="delayDays" placeholder="0"></label>
+            <label class="field"><span>장기 중단 후 재시작</span><input type="number" min="0" name="restartCount" placeholder="0"></label>
+            <label class="field"><span>회의/보고 자료</span><input type="number" min="0" name="meetingReports" placeholder="0"></label>
+            <label class="field"><span>추가 수정 횟수</span><input type="number" min="0" name="extraRevisionCount" placeholder="0"></label>
           </div>
         </section>
 
@@ -623,6 +640,8 @@
           <div class="total-box">
             <div class="total-line"><span>소계</span><strong id="subtotal">0원</strong></div>
             <div class="total-line"><span>리스크 가중</span><strong id="riskAmount">0원</strong></div>
+            <div class="total-line"><span>일정 가산</span><strong id="deadlinePremium">0원</strong></div>
+            <div class="total-line"><span>PM/커뮤니케이션 비용</span><strong id="pmFee">0원</strong></div>
             <div class="total-line"><span>거래/결제 비용</span><strong id="externalFee">0원</strong></div>
             <div class="total-line"><span>VAT</span><strong id="vat">0원</strong></div>
             <div class="total-line final"><span>합계</span><strong id="grandTotal">0원</strong></div>
@@ -659,25 +678,34 @@
       baseB: ["Option B 기본 착수비", 900000],
       baseC: ["Option C 기본 착수비", 1800000],
       mainScreens: ["메인 시안", 300000],
-      subScreens: ["서브 화면", 120000],
-      detailScreens: ["상세 페이지", 150000],
-      adminScreens: ["관리자 화면", 220000],
+      subScreens: ["서브 화면", 180000],
+      detailScreens: ["상세 페이지", 220000],
+      adminScreens: ["관리자 화면", 300000],
       modals: ["모달 / 팝업 / 드롭다운", 50000],
-      mobileScreens: ["모바일 대응 화면", 70000]
+      mobileScreens: ["모바일 대응 화면", 100000],
+      weekendDays: ["주말/공휴일 투입일", 450000],
+      nightTasks: ["야간 대응 건", 150000],
+      delayDays: ["자료 지연 대기일", 150000],
+      restartCount: ["장기 중단 후 재시작", 300000],
+      meetingReports: ["회의/보고 자료", 150000],
+      extraRevisionCount: ["추가 수정", 150000]
     };
 
     const scopes = [
-      ["uxReview", "제공 자료 검토", 120000],
+      ["uxReview", "제공 자료 검토", 300000],
       ["requirements", "요구사항 정리", 180000],
       ["contentPriority", "콘텐츠 우선순위 정리", 150000],
       ["ia", "IA / 메뉴 구조 설계", 300000],
       ["userFlow", "사용자 흐름 설계", 250000],
       ["wireframe", "와이어프레임 / 화면설계", 350000],
-      ["states", "상태값 설계", 220000],
-      ["fullResponsive", "Full Responsive", 450000],
-      ["responsiveDetail", "모바일 테이블/필터 대응", 250000],
-      ["uiKit", "UI Kit / 컴포넌트 세트", 600000],
-      ["designSystem", "디자인 시스템 구축", 1200000],
+      ["states", "상태값 설계", 300000],
+      ["formSet", "폼/입력 컴포넌트 세트", 300000],
+      ["dataTable", "데이터 테이블 설계", 500000],
+      ["fullResponsive", "Full Responsive", 500000],
+      ["responsiveDetail", "모바일 테이블/필터 대응", 500000],
+      ["uiKit", "UI Kit / 컴포넌트 세트", 800000],
+      ["designSystem", "디자인 시스템 구축", 2000000],
+      ["accessibility", "접근성 기준 검토", 500000],
       ["productComplex", "SaaS·관리자·대시보드 고복잡도 설계", 700000],
       ["aiPrompt", "AI 프롬프트 설계/반복 생성", 150000],
       ["aiImage", "AI 이미지 생성/선별/보정", 220000],
@@ -687,11 +715,10 @@
       ["infographic", "인포그래픽 / 데이터 시각화", 300000],
       ["motion", "영상/모션/인터랙션 가이드", 400000],
       ["prototype", "Figma Prototype / 핵심 플로우", 250000],
-      ["handoff", "개발 핸드오프 문서", 320000],
-      ["qa", "개발 QA 피드백", 350000],
-      ["publishingGuide", "퍼블리싱 가이드", 450000],
-      ["extraRevision", "수정 초과 / 방향 변경 대응", 150000],
-      ["urgentWork", "긴급 일정 / 우선 배정", 400000]
+      ["figmaOrganize", "Figma 파일 정리", 300000],
+      ["handoff", "개발 핸드오프 문서", 800000],
+      ["qa", "개발 QA 피드백", 300000],
+      ["publishingGuide", "퍼블리싱 가이드", 1000000]
     ];
 
     const form = document.getElementById("quoteForm");
@@ -750,6 +777,11 @@
         if (qty > 0) items.push({ label: rates[key][0], qty, unit: num(`rate_${key}`) });
       });
 
+      ["weekendDays", "nightTasks", "delayDays", "restartCount", "meetingReports", "extraRevisionCount"].forEach((key) => {
+        const qty = num(key);
+        if (qty > 0) items.push({ label: rates[key][0], qty, unit: num(`rate_${key}`) });
+      });
+
       scopes.forEach(([key, label, cost]) => {
         const checked = form.elements[`scope_${key}`]?.checked;
         if (checked) items.push({ label, qty: 1, unit: cost });
@@ -769,10 +801,13 @@
       const date = val("issueDate") || today();
       const items = collectItems();
       const subtotal = items.reduce((sum, item) => sum + item.amount, 0);
-      const riskFactor = num("complexity") + num("planning") + num("stakeholders") + num("deadline");
-      const cappedRiskFactor = Math.min(1 + riskFactor, 1.75);
+      const riskFactor = num("complexity") + num("planning") + num("stakeholders");
+      const cappedRiskFactor = Math.min(1 + riskFactor, 1.45);
       const riskAmount = subtotal * (cappedRiskFactor - 1);
-      const workTotal = subtotal + riskAmount;
+      const afterRisk = subtotal + riskAmount;
+      const deadlinePremium = afterRisk * num("deadline");
+      const pmFee = (afterRisk + deadlinePremium) * (num("pmRate") / 100);
+      const workTotal = afterRisk + deadlinePremium + pmFee;
       const externalFee = workTotal * (num("externalFeeRate") / 100);
       const beforeVat = workTotal + externalFee;
       const vat = val("vatEnabled") === "yes" ? beforeVat * 0.1 : 0;
@@ -799,6 +834,8 @@
 
       document.getElementById("subtotal").textContent = won(subtotal);
       document.getElementById("riskAmount").textContent = `${won(riskAmount)} (${cappedRiskFactor.toFixed(2)}x)`;
+      document.getElementById("deadlinePremium").textContent = won(deadlinePremium);
+      document.getElementById("pmFee").textContent = won(pmFee);
       document.getElementById("externalFee").textContent = won(externalFee);
       document.getElementById("vat").textContent = won(vat);
       document.getElementById("grandTotal").textContent = won(grandTotal);
@@ -809,6 +846,7 @@
     }
 
     function fillSample() {
+      form.reset();
       form.elements.clientName.value = "샘플 클라이언트";
       form.elements.projectName.value = "웹앱 UI/UX 디자인 프로젝트";
       form.elements.designerName.value = "오경준";
@@ -818,8 +856,9 @@
       form.elements.packageType.value = "B";
       form.elements.complexity.value = "0.12";
       form.elements.planning.value = "0.12";
-      form.elements.deadline.value = "0.15";
+      form.elements.deadline.value = "0";
       form.elements.stakeholders.value = "0.06";
+      form.elements.pmRate.value = 0;
       form.elements.externalFeeRate.value = 0;
       form.elements.depositRate.value = 50;
       form.elements.balanceDueDays.value = 7;
@@ -827,7 +866,7 @@
       form.elements.detailScreens.value = 2;
       form.elements.modals.value = 2;
       form.elements.mobileScreens.value = 3;
-      ["uxReview", "requirements", "contentPriority", "ia", "userFlow", "states", "fullResponsive", "responsiveDetail", "handoff", "prototype"].forEach((key) => {
+      ["uxReview", "requirements", "contentPriority", "ia", "userFlow", "states", "fullResponsive", "handoff", "prototype"].forEach((key) => {
         form.elements[`scope_${key}`].checked = true;
       });
       calculate();
