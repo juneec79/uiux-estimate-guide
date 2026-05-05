@@ -533,6 +533,7 @@
               <option value="1.6">긴급 투입</option>
             </select></label>
             <label class="field"><span>VAT</span><select name="vatEnabled"><option value="yes">10% 포함</option><option value="no">미포함</option></select></label>
+            <label class="field"><span>거래/결제 비용률</span><input type="number" min="0" max="30" name="externalFeeRate" value="0"></label>
           </div>
         </section>
 
@@ -617,6 +618,7 @@
           <div class="total-box">
             <div class="total-line"><span>소계</span><strong id="subtotal">0원</strong></div>
             <div class="total-line"><span>리스크 가중</span><strong id="riskAmount">0원</strong></div>
+            <div class="total-line"><span>거래/결제 비용</span><strong id="externalFee">0원</strong></div>
             <div class="total-line"><span>VAT</span><strong id="vat">0원</strong></div>
             <div class="total-line final"><span>합계</span><strong id="grandTotal">0원</strong></div>
             <div class="total-line"><span>선금</span><strong id="deposit">0원</strong></div>
@@ -628,6 +630,8 @@
             <p id="includedScopes" class="empty">선택된 포함 항목이 없습니다.</p>
             <p><strong>추가 비용 발생 기준</strong></p>
             <p>화면·섹션·기능·상태값 추가, 기획/IA/콘텐츠 구조 변경, 확정 후 신규 시안 요청, 반응형 범위 추가, 이미지/그래픽/영상 수량 추가, 개발 핸드오프·QA 참여 추가, 수정 횟수 초과 시 별도 견적입니다.</p>
+            <p><strong>시장 참고 기준</strong></p>
+            <p>공개 평균가는 단순 작업, 초급 작업, 일부 화면 작업이 섞인 참고 가격입니다. 본 견적은 총액 비교가 아니라 UX 설계, 상태값, 반응형, 이미지 제작, 디자인 시스템, 개발 핸드오프 포함 여부를 기준으로 산정합니다.</p>
             <p><strong>비고</strong></p>
             <p id="quoteMemo"></p>
           </div>
@@ -663,19 +667,26 @@
       ["contentPriority", "콘텐츠 우선순위 정리", 300000],
       ["ia", "IA / 메뉴 구조 설계", 600000],
       ["userFlow", "사용자 흐름 설계", 500000],
-      ["wireframe", "신규 와이어프레임 제작", 700000],
+      ["wireframe", "와이어프레임 / 화면설계", 700000],
       ["states", "상태값 설계", 450000],
       ["fullResponsive", "Full Responsive", 900000],
+      ["responsiveDetail", "모바일 테이블/필터 대응", 500000],
       ["uiKit", "UI Kit / 컴포넌트 세트", 1200000],
       ["designSystem", "디자인 시스템 구축", 2400000],
+      ["productComplex", "SaaS·관리자·대시보드 고복잡도 설계", 1500000],
       ["aiPrompt", "AI 프롬프트 설계/반복 생성", 300000],
       ["aiImage", "AI 이미지 생성/선별/보정", 450000],
-      ["imageWork", "이미지 제작/합성/리터칭", 600000],
+      ["keyVisual", "키비주얼 / 캠페인 이미지", 900000],
+      ["imageWork", "제품 이미지 합성/리터칭/업스케일", 600000],
       ["iconGraphic", "아이콘/그래픽/다이어그램", 500000],
+      ["infographic", "인포그래픽 / 데이터 시각화", 600000],
       ["motion", "영상/모션/인터랙션 가이드", 800000],
+      ["prototype", "Figma Prototype / 핵심 플로우", 500000],
       ["handoff", "개발 핸드오프 문서", 650000],
       ["qa", "개발 QA 피드백", 700000],
-      ["publishingGuide", "퍼블리싱 가이드", 900000]
+      ["publishingGuide", "퍼블리싱 가이드", 900000],
+      ["extraRevision", "수정 초과 / 방향 변경 대응", 300000],
+      ["urgentWork", "긴급 일정 / 우선 배정", 800000]
     ];
 
     const form = document.getElementById("quoteForm");
@@ -756,7 +767,9 @@
       const riskFactor = num("complexity") * num("planning") * num("stakeholders") * num("deadline");
       const cappedRiskFactor = Math.min(riskFactor, 3.2);
       const riskAmount = subtotal * (cappedRiskFactor - 1);
-      const beforeVat = subtotal + riskAmount;
+      const workTotal = subtotal + riskAmount;
+      const externalFee = workTotal * (num("externalFeeRate") / 100);
+      const beforeVat = workTotal + externalFee;
       const vat = val("vatEnabled") === "yes" ? beforeVat * 0.1 : 0;
       const grandTotal = beforeVat + vat;
       const deposit = grandTotal * (num("depositRate") / 100);
@@ -781,6 +794,7 @@
 
       document.getElementById("subtotal").textContent = won(subtotal);
       document.getElementById("riskAmount").textContent = `${won(riskAmount)} (${cappedRiskFactor.toFixed(2)}x)`;
+      document.getElementById("externalFee").textContent = won(externalFee);
       document.getElementById("vat").textContent = won(vat);
       document.getElementById("grandTotal").textContent = won(grandTotal);
       document.getElementById("deposit").textContent = won(deposit);
@@ -795,11 +809,13 @@
       form.elements.packageType.value = "B";
       form.elements.complexity.value = "1.25";
       form.elements.planning.value = "1.3";
+      form.elements.deadline.value = "1.3";
+      form.elements.externalFeeRate.value = 10;
       form.elements.subScreens.value = 8;
       form.elements.detailScreens.value = 4;
       form.elements.modals.value = 6;
       form.elements.mobileScreens.value = 6;
-      ["uxReview", "requirements", "contentPriority", "ia", "userFlow", "states", "fullResponsive", "handoff"].forEach((key) => {
+      ["uxReview", "requirements", "contentPriority", "ia", "userFlow", "states", "fullResponsive", "responsiveDetail", "handoff", "prototype"].forEach((key) => {
         form.elements[`scope_${key}`].checked = true;
       });
       calculate();
