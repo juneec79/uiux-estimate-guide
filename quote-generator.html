@@ -489,14 +489,14 @@
             <p class="hint">견적서 상단에 표시됩니다.</p>
           </div>
           <div class="grid">
-            <label class="field"><span>프로젝트명</span><input name="projectName" value="웹·앱 UI/UX 디자인 프로젝트"></label>
+            <label class="field"><span>프로젝트명</span><input name="projectName" placeholder="프로젝트명"></label>
             <label class="field"><span>클라이언트</span><input name="clientName" placeholder="클라이언트명"></label>
-            <label class="field"><span>디자이너</span><input name="designerName" value="오경준 (catlabstudio2026)"></label>
-            <label class="field"><span>연락처</span><input name="contact" value="hello@aong.kr"></label>
+            <label class="field"><span>디자이너</span><input name="designerName" placeholder="디자이너명"></label>
+            <label class="field"><span>연락처</span><input name="contact" placeholder="이메일 / 연락처"></label>
             <label class="field"><span>견적 발행일</span><input type="date" name="issueDate"></label>
-            <label class="field"><span>견적 유효기간</span><input type="number" min="1" name="validDays" value="14"></label>
-            <label class="field"><span>작업 방식</span><select name="workTool"><option>Figma</option><option>Figma + 가이드 문서</option><option>Figma + 개발 핸드오프</option></select></label>
-            <label class="field"><span>프로젝트 유형</span><select name="projectType"><option value="website">웹사이트</option><option value="webapp">웹앱</option><option value="mobile">모바일 앱</option><option value="saas">SaaS</option><option value="admin">관리자</option></select></label>
+            <label class="field"><span>견적 유효기간</span><input type="number" min="1" name="validDays" placeholder="14"></label>
+            <label class="field"><span>작업 방식</span><select name="workTool"><option value="">선택</option><option>Figma</option><option>Figma + 가이드 문서</option><option>Figma + 개발 핸드오프</option></select></label>
+            <label class="field"><span>프로젝트 유형</span><select name="projectType"><option value="">선택</option><option value="website">웹사이트</option><option value="webapp">웹앱</option><option value="mobile">모바일 앱</option><option value="saas">SaaS</option><option value="admin">관리자</option></select></label>
           </div>
         </section>
 
@@ -507,33 +507,38 @@
           </div>
           <div class="grid three">
             <label class="field"><span>진행 옵션</span><select name="packageType">
+              <option value="">선택</option>
               <option value="A">Option A / 기본 UI 디자인</option>
               <option value="B">Option B / UX/UI 설계 포함</option>
               <option value="C">Option C / 프로덕트 디자인 전체</option>
             </select></label>
             <label class="field"><span>UX 복잡도</span><select name="complexity">
-              <option value="1">낮음</option>
-              <option value="1.25">중간</option>
-              <option value="1.6">높음</option>
+              <option value="">선택</option>
+              <option value="0">낮음</option>
+              <option value="0.12">중간</option>
+              <option value="0.25">높음</option>
             </select></label>
             <label class="field"><span>기획 확정도</span><select name="planning">
-              <option value="1">기획/IA/정책 확정</option>
-              <option value="1.3">자료는 있으나 구조 미정</option>
-              <option value="1.5">화면설계 없음</option>
-              <option value="1.8">아이디어만 있음</option>
+              <option value="">선택</option>
+              <option value="0">기획/IA/정책 확정</option>
+              <option value="0.12">자료는 있으나 구조 미정</option>
+              <option value="0.2">화면설계 없음</option>
+              <option value="0.3">아이디어만 있음</option>
             </select></label>
             <label class="field"><span>의사결정자 수</span><select name="stakeholders">
-              <option value="1">1명</option>
-              <option value="1.15">2~3명</option>
-              <option value="1.3">4명 이상</option>
+              <option value="">선택</option>
+              <option value="0">1명</option>
+              <option value="0.06">2~3명</option>
+              <option value="0.12">4명 이상</option>
             </select></label>
             <label class="field"><span>일정 리스크</span><select name="deadline">
-              <option value="1">일반 일정</option>
-              <option value="1.3">촉박함</option>
-              <option value="1.6">긴급 투입</option>
+              <option value="">선택</option>
+              <option value="0">일반 일정</option>
+              <option value="0.15">촉박함</option>
+              <option value="0.3">긴급 투입</option>
             </select></label>
-            <label class="field"><span>VAT</span><select name="vatEnabled"><option value="yes">10% 포함</option><option value="no">미포함</option></select></label>
-            <label class="field"><span>거래/결제 비용률</span><input type="number" min="0" max="30" name="externalFeeRate" value="0"></label>
+            <label class="field"><span>VAT</span><select name="vatEnabled"><option value="no">미포함</option><option value="yes">10% 포함</option></select></label>
+            <label class="field"><span>거래/결제 비용률</span><input type="number" min="0" max="30" name="externalFeeRate" placeholder="0"></label>
           </div>
         </section>
 
@@ -543,12 +548,12 @@
             <p class="hint">화면·상태값·반응형 범위에 따라 공수가 증가합니다.</p>
           </div>
           <div class="grid three">
-            <label class="field"><span>메인 시안</span><input type="number" min="0" name="mainScreens" value="1"></label>
-            <label class="field"><span>서브 화면</span><input type="number" min="0" name="subScreens" value="5"></label>
-            <label class="field"><span>상세 페이지</span><input type="number" min="0" name="detailScreens" value="2"></label>
-            <label class="field"><span>관리자 화면</span><input type="number" min="0" name="adminScreens" value="0"></label>
-            <label class="field"><span>모달/팝업</span><input type="number" min="0" name="modals" value="2"></label>
-            <label class="field"><span>모바일 대응 화면</span><input type="number" min="0" name="mobileScreens" value="3"></label>
+            <label class="field"><span>메인 시안</span><input type="number" min="0" name="mainScreens" placeholder="0"></label>
+            <label class="field"><span>서브 화면</span><input type="number" min="0" name="subScreens" placeholder="0"></label>
+            <label class="field"><span>상세 페이지</span><input type="number" min="0" name="detailScreens" placeholder="0"></label>
+            <label class="field"><span>관리자 화면</span><input type="number" min="0" name="adminScreens" placeholder="0"></label>
+            <label class="field"><span>모달/팝업</span><input type="number" min="0" name="modals" placeholder="0"></label>
+            <label class="field"><span>모바일 대응 화면</span><input type="number" min="0" name="mobileScreens" placeholder="0"></label>
           </div>
         </section>
 
@@ -575,10 +580,10 @@
             <h2>결제와 메모</h2>
           </div>
           <div class="grid">
-            <label class="field"><span>선금 비율</span><input type="number" min="0" max="100" name="depositRate" value="50"></label>
-            <label class="field"><span>잔금 지급 기한</span><input type="number" min="0" name="balanceDueDays" value="7"></label>
+            <label class="field"><span>선금 비율</span><input type="number" min="0" max="100" name="depositRate" placeholder="50"></label>
+            <label class="field"><span>잔금 지급 기한</span><input type="number" min="0" name="balanceDueDays" placeholder="7"></label>
           </div>
-          <label class="field" style="margin-top: var(--space-2);"><span>비고 / 특약</span><textarea name="memo">체크되지 않은 항목은 별도 협의 및 추가 비용 대상입니다. 선금 미입금 시 작업은 착수하지 않습니다.</textarea></label>
+          <label class="field" style="margin-top: var(--space-2);"><span>비고 / 특약</span><textarea name="memo" placeholder="체크되지 않은 항목은 별도 협의 및 추가 비용 대상입니다."></textarea></label>
         </section>
       </form>
 
@@ -650,43 +655,43 @@
     };
 
     const rates = {
-      baseA: ["Option A 기본 착수비", 900000],
-      baseB: ["Option B 기본 착수비", 1800000],
-      baseC: ["Option C 기본 착수비", 3600000],
-      mainScreens: ["메인 시안", 450000],
-      subScreens: ["서브 화면", 220000],
-      detailScreens: ["상세 페이지", 260000],
-      adminScreens: ["관리자 화면", 360000],
-      modals: ["모달 / 팝업 / 드롭다운", 90000],
-      mobileScreens: ["모바일 대응 화면", 120000]
+      baseA: ["Option A 기본 착수비", 500000],
+      baseB: ["Option B 기본 착수비", 900000],
+      baseC: ["Option C 기본 착수비", 1800000],
+      mainScreens: ["메인 시안", 300000],
+      subScreens: ["서브 화면", 120000],
+      detailScreens: ["상세 페이지", 150000],
+      adminScreens: ["관리자 화면", 220000],
+      modals: ["모달 / 팝업 / 드롭다운", 50000],
+      mobileScreens: ["모바일 대응 화면", 70000]
     };
 
     const scopes = [
-      ["uxReview", "제공 자료 검토", 250000],
-      ["requirements", "요구사항 정리", 350000],
-      ["contentPriority", "콘텐츠 우선순위 정리", 300000],
-      ["ia", "IA / 메뉴 구조 설계", 600000],
-      ["userFlow", "사용자 흐름 설계", 500000],
-      ["wireframe", "와이어프레임 / 화면설계", 700000],
-      ["states", "상태값 설계", 450000],
-      ["fullResponsive", "Full Responsive", 900000],
-      ["responsiveDetail", "모바일 테이블/필터 대응", 500000],
-      ["uiKit", "UI Kit / 컴포넌트 세트", 1200000],
-      ["designSystem", "디자인 시스템 구축", 2400000],
-      ["productComplex", "SaaS·관리자·대시보드 고복잡도 설계", 1500000],
-      ["aiPrompt", "AI 프롬프트 설계/반복 생성", 300000],
-      ["aiImage", "AI 이미지 생성/선별/보정", 450000],
-      ["keyVisual", "키비주얼 / 캠페인 이미지", 900000],
-      ["imageWork", "제품 이미지 합성/리터칭/업스케일", 600000],
-      ["iconGraphic", "아이콘/그래픽/다이어그램", 500000],
-      ["infographic", "인포그래픽 / 데이터 시각화", 600000],
-      ["motion", "영상/모션/인터랙션 가이드", 800000],
-      ["prototype", "Figma Prototype / 핵심 플로우", 500000],
-      ["handoff", "개발 핸드오프 문서", 650000],
-      ["qa", "개발 QA 피드백", 700000],
-      ["publishingGuide", "퍼블리싱 가이드", 900000],
-      ["extraRevision", "수정 초과 / 방향 변경 대응", 300000],
-      ["urgentWork", "긴급 일정 / 우선 배정", 800000]
+      ["uxReview", "제공 자료 검토", 120000],
+      ["requirements", "요구사항 정리", 180000],
+      ["contentPriority", "콘텐츠 우선순위 정리", 150000],
+      ["ia", "IA / 메뉴 구조 설계", 300000],
+      ["userFlow", "사용자 흐름 설계", 250000],
+      ["wireframe", "와이어프레임 / 화면설계", 350000],
+      ["states", "상태값 설계", 220000],
+      ["fullResponsive", "Full Responsive", 450000],
+      ["responsiveDetail", "모바일 테이블/필터 대응", 250000],
+      ["uiKit", "UI Kit / 컴포넌트 세트", 600000],
+      ["designSystem", "디자인 시스템 구축", 1200000],
+      ["productComplex", "SaaS·관리자·대시보드 고복잡도 설계", 700000],
+      ["aiPrompt", "AI 프롬프트 설계/반복 생성", 150000],
+      ["aiImage", "AI 이미지 생성/선별/보정", 220000],
+      ["keyVisual", "키비주얼 / 캠페인 이미지", 450000],
+      ["imageWork", "제품 이미지 합성/리터칭/업스케일", 300000],
+      ["iconGraphic", "아이콘/그래픽/다이어그램", 250000],
+      ["infographic", "인포그래픽 / 데이터 시각화", 300000],
+      ["motion", "영상/모션/인터랙션 가이드", 400000],
+      ["prototype", "Figma Prototype / 핵심 플로우", 250000],
+      ["handoff", "개발 핸드오프 문서", 320000],
+      ["qa", "개발 QA 피드백", 350000],
+      ["publishingGuide", "퍼블리싱 가이드", 450000],
+      ["extraRevision", "수정 초과 / 방향 변경 대응", 150000],
+      ["urgentWork", "긴급 일정 / 우선 배정", 400000]
     ];
 
     const form = document.getElementById("quoteForm");
@@ -734,11 +739,11 @@
     function collectItems() {
       const packageType = val("packageType");
       const baseKey = packageType === "A" ? "baseA" : packageType === "B" ? "baseB" : "baseC";
-      const items = [{
+      const items = packageType ? [{
         label: rates[baseKey][0],
         qty: 1,
         unit: num(`rate_${baseKey}`)
-      }];
+      }] : [];
 
       ["mainScreens", "subScreens", "detailScreens", "adminScreens", "modals", "mobileScreens"].forEach((key) => {
         const qty = num(key);
@@ -764,8 +769,8 @@
       const date = val("issueDate") || today();
       const items = collectItems();
       const subtotal = items.reduce((sum, item) => sum + item.amount, 0);
-      const riskFactor = num("complexity") * num("planning") * num("stakeholders") * num("deadline");
-      const cappedRiskFactor = Math.min(riskFactor, 3.2);
+      const riskFactor = num("complexity") + num("planning") + num("stakeholders") + num("deadline");
+      const cappedRiskFactor = Math.min(1 + riskFactor, 1.75);
       const riskAmount = subtotal * (cappedRiskFactor - 1);
       const workTotal = subtotal + riskAmount;
       const externalFee = workTotal * (num("externalFeeRate") / 100);
@@ -780,7 +785,7 @@
       document.getElementById("quoteValid").textContent = `유효기간 ${num("validDays")}일`;
       document.getElementById("sumProject").textContent = val("projectName") || "-";
       document.getElementById("sumClient").textContent = val("clientName") || "-";
-      document.getElementById("sumPackage").textContent = packageLabels[val("packageType")];
+      document.getElementById("sumPackage").textContent = packageLabels[val("packageType")] || "-";
       document.getElementById("sumTotal").textContent = won(grandTotal);
 
       document.getElementById("quoteRows").innerHTML = items.map(item => `
@@ -805,16 +810,23 @@
 
     function fillSample() {
       form.elements.clientName.value = "샘플 클라이언트";
+      form.elements.projectName.value = "웹앱 UI/UX 디자인 프로젝트";
+      form.elements.designerName.value = "오경준";
+      form.elements.contact.value = "hello@aong.kr";
+      form.elements.validDays.value = 14;
       form.elements.projectType.value = "webapp";
       form.elements.packageType.value = "B";
-      form.elements.complexity.value = "1.25";
-      form.elements.planning.value = "1.3";
-      form.elements.deadline.value = "1.3";
-      form.elements.externalFeeRate.value = 10;
-      form.elements.subScreens.value = 8;
-      form.elements.detailScreens.value = 4;
-      form.elements.modals.value = 6;
-      form.elements.mobileScreens.value = 6;
+      form.elements.complexity.value = "0.12";
+      form.elements.planning.value = "0.12";
+      form.elements.deadline.value = "0.15";
+      form.elements.stakeholders.value = "0.06";
+      form.elements.externalFeeRate.value = 0;
+      form.elements.depositRate.value = 50;
+      form.elements.balanceDueDays.value = 7;
+      form.elements.subScreens.value = 5;
+      form.elements.detailScreens.value = 2;
+      form.elements.modals.value = 2;
+      form.elements.mobileScreens.value = 3;
       ["uxReview", "requirements", "contentPriority", "ia", "userFlow", "states", "fullResponsive", "responsiveDetail", "handoff", "prototype"].forEach((key) => {
         form.elements[`scope_${key}`].checked = true;
       });
@@ -822,14 +834,12 @@
     }
 
     renderControls();
-    form.elements.issueDate.value = today();
     form.addEventListener("input", calculate);
     form.addEventListener("change", calculate);
     document.getElementById("printBtn").addEventListener("click", () => window.print());
     document.getElementById("sampleBtn").addEventListener("click", fillSample);
     document.getElementById("resetBtn").addEventListener("click", () => {
       form.reset();
-      form.elements.issueDate.value = today();
       calculate();
     });
     calculate();
