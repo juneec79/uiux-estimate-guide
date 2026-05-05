@@ -602,13 +602,20 @@
             </select></label>
             <label class="field"><span>경력 등급</span><select name="careerGrade">
               <option value="">선택</option>
-              <option value="0.9">초급 / 4~8년 미만</option>
-              <option value="1.15">중급 / 8~12년 미만</option>
-              <option value="1.5">고급 / 12~16년 미만</option>
-              <option value="2">특급 / 16~20년 미만</option>
-              <option value="2.6">총괄 / 20년 이상</option>
+              <option value="assistant">보조 / 1~4년 미만</option>
+              <option value="junior">초급 / 4~8년 미만</option>
+              <option value="mid">중급 / 8~12년 미만</option>
+              <option value="senior">고급 / 12~16년 미만</option>
+              <option value="principal">특급 / 16~20년 미만</option>
+              <option value="director">총괄 / 20년 이상</option>
             </select></label>
             <label class="field"><span>실제 경력 년차</span><input type="number" min="0" name="careerYears" placeholder="0"></label>
+            <label class="field"><span>경력 가중치 기준</span><select name="careerWeightMode">
+              <option value="">권장값</option>
+              <option value="low">하한</option>
+              <option value="mid">권장값</option>
+              <option value="high">상한</option>
+            </select></label>
             <label class="field"><span>일정 리스크</span><select name="deadline">
               <option value="">선택</option>
               <option value="0">정상 일정 / 가산 없음</option>
@@ -743,6 +750,8 @@
             <p>화면·섹션·기능·상태값 추가, 기획/IA/콘텐츠 구조 변경, 확정 후 신규 시안 요청, 반응형 범위 추가, 이미지/그래픽/영상 수량 추가, 개발 핸드오프·QA 참여 추가, 수정 횟수 초과 시 별도 견적입니다.</p>
             <p><strong>경력 등급 기준</strong></p>
             <p>같은 화면 수라도 누가 책임지고 설계하느냐에 따라 단가가 달라집니다. 초급은 4~8년 미만, 중급은 8~12년 미만, 고급은 12~16년 미만, 특급은 16~20년 미만, 총괄은 20년 이상을 기준으로 하며, 년차뿐 아니라 문제 정의, UX 판단, 시각 완성도, 개발 전달 책임, 리스크 관리 범위를 함께 봅니다.</p>
+            <p><strong>공표 노임단가 참고 기준</strong></p>
+            <p>공표 노임단가는 직접인건비 산정의 기준이며, 프리랜서 실판매가나 프로젝트 총견적과 동일하지 않습니다. 실제 견적에는 제경비, 창작료, 유료 툴, 사업자 운영비, 커뮤니케이션, 수정·일정 리스크가 별도로 반영될 수 있습니다.</p>
             <p><strong>수정 정책</strong></p>
             <p>수정은 확정된 방향 안에서의 문구, 간격, 컬러, 이미지 교체 등 부분 보완에 한합니다. 레이아웃 구조, 섹션 흐름, 기능, 톤앤매너, 이미지 방향이 바뀌는 경우 신규 시안 또는 추가 작업으로 산정합니다.</p>
             <p><strong>자료 제공 및 일정 기준</strong></p>
@@ -819,6 +828,15 @@
       ["qa", "개발 QA 피드백", 300000],
       ["publishingGuide", "퍼블리싱 가이드", 1000000]
     ];
+
+    const careerMultipliers = {
+      assistant: { label: "보조", years: "1~4년 미만", low: 0.6, mid: 0.7, high: 0.8 },
+      junior: { label: "초급", years: "4~8년 미만", low: 0.8, mid: 0.9, high: 1.0 },
+      mid: { label: "중급", years: "8~12년 미만", low: 1.0, mid: 1.15, high: 1.3 },
+      senior: { label: "고급", years: "12~16년 미만", low: 1.3, mid: 1.5, high: 1.7 },
+      principal: { label: "특급", years: "16~20년 미만", low: 1.7, mid: 2.0, high: 2.3 },
+      director: { label: "총괄", years: "20년 이상", low: 2.3, mid: 2.6, high: 3.0 }
+    };
 
     const docGuideSections = [
       {
@@ -950,6 +968,16 @@
           ["고급 / 12~16년", "60만~90만 원", "1,200만~1,800만 원", "SaaS, 관리자, 복잡한 UX/UI, 디자인 시스템 일부", "1.3~1.7배"],
           ["특급 / 16~20년", "90만~130만 원", "1,800만~2,600만 원", "프로덕트 리드, UX 전략, 복잡한 시스템 설계", "1.7~2.3배"],
           ["총괄 / 20년+", "120만~180만 원+", "2,400만~3,600만 원+", "디렉션, 제품 구조, 전체 품질·범위 책임", "2.3~3.0배+"]
+        ]
+      },
+      {
+        title: "경력 가중치 적용 방식",
+        note: "앱 계산은 기본적으로 각 등급 범위의 권장값을 사용합니다. 범위가 명확히 좁거나 자료가 확정된 프로젝트는 하한, 책임 범위가 크거나 리스크가 높은 프로젝트는 상한을 선택합니다.",
+        table: [
+          ["적용 기준", "사용 상황", "계산 방식"],
+          ["하한", "기획·자료·와이어가 확정되어 있고 디자이너의 판단 책임이 제한적인 경우", "각 경력 등급 가중치 범위의 낮은 값 적용"],
+          ["권장값", "일반적인 UI/UX 프로젝트 협상 기준", "각 경력 등급 가중치 범위의 중간값 적용"],
+          ["상한", "기획 미정, 고복잡도, 개발 핸드오프, QA, 의사결정 리스크까지 책임지는 경우", "각 경력 등급 가중치 범위의 높은 값 적용"]
         ]
       },
       {
@@ -1121,13 +1149,19 @@
     }
 
     function gradeForYears(years) {
-      if (years >= 20) return 2.6;
-      if (years >= 16) return 2;
-      if (years >= 12) return 1.5;
-      if (years >= 8) return 1.15;
-      if (years >= 4) return 0.9;
-      if (years >= 1) return 0.7;
-      return 1;
+      if (years >= 20) return "director";
+      if (years >= 16) return "principal";
+      if (years >= 12) return "senior";
+      if (years >= 8) return "mid";
+      if (years >= 4) return "junior";
+      if (years >= 1) return "assistant";
+      return "";
+    }
+
+    function careerMultiplierFor(grade, mode) {
+      const entry = careerMultipliers[grade];
+      if (!entry) return 1;
+      return entry[mode] || entry.mid;
     }
 
     function renderControls() {
@@ -1222,7 +1256,9 @@
       const date = val("issueDate") || today();
       const items = collectItems();
       const subtotal = items.reduce((sum, item) => sum + item.amount, 0);
-      const careerMultiplier = num("careerGrade") || gradeForYears(num("careerYears"));
+      const careerGrade = val("careerGrade") || gradeForYears(num("careerYears"));
+      const careerMode = val("careerWeightMode") || "mid";
+      const careerMultiplier = careerMultiplierFor(careerGrade, careerMode);
       const careerAmount = subtotal * (careerMultiplier - 1);
       const careerSubtotal = subtotal + careerAmount;
       const riskFactor = num("complexity") + num("planning") + num("stakeholders");
@@ -1281,8 +1317,9 @@
       form.elements.packageType.value = "B";
       form.elements.complexity.value = "0.12";
       form.elements.planning.value = "0.12";
-      form.elements.careerGrade.value = "1.15";
+      form.elements.careerGrade.value = "mid";
       form.elements.careerYears.value = 10;
+      form.elements.careerWeightMode.value = "mid";
       form.elements.deadline.value = "0";
       form.elements.stakeholders.value = "0.06";
       form.elements.pmRate.value = 0;
