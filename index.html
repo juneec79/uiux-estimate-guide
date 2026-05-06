@@ -699,6 +699,35 @@ tr + tr td{padding-top:4px}
   .summary,.scope-summary{gap:8px}
 }
 </style>
+<style>
+.form{
+  display:grid;
+  gap:104px;
+  background:transparent;
+}
+.group{
+  padding:0;
+}
+.group + .group{
+  padding-top:0;
+}
+.field input,.field select,.field textarea{
+  border:1px solid #d6d6d1;
+  background:#fff;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border:1px solid #111;
+  box-shadow:none;
+  background:#fff;
+}
+@media(max-width:1199px){
+  .form{gap:80px}
+}
+@media(max-width:767px){
+  .form{gap:56px}
+  .group{padding:0}
+}
+</style>
 </head>
 <body>
 <main class="app">
