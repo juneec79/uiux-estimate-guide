@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>디자인 견적·일정 산정서 생성기</title>
+<style>
+:root{--color-ink-blue:#011821;--color-code-black:#000;--color-ghost-white:#fff;--color-fog-gray:#f6f6f8;--color-steel-gray:#e3e4e8;--color-charcoal-text:#232730;--color-slate-text:#7c7f88;--color-deep-plum:#111a4a;--color-action-orange:#ec652b;--color-faded-grid-blue:#023247;--color-success-moss:#44b48b;--color-callout-cyan:#167e6c;--font-suisseintl:Inter,Pretendard,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--font-sfmono:"SFMono-Regular","IBM Plex Mono",ui-monospace,Menlo,Monaco,Consolas,monospace;--text-caption:10px;--text-body:14px;--text-subheading:18px;--text-heading-sm:24px;--text-heading:40px;--text-display:48px;--spacing-4:4px;--spacing-8:8px;--spacing-12:12px;--spacing-16:16px;--spacing-20:20px;--spacing-24:24px;--spacing-32:32px;--spacing-40:40px;--spacing-48:48px;--spacing-64:64px;--radius-default:8px;--shadow-subtle:rgba(17,26,74,.05) 0 0 0 1px,rgba(0,0,0,.08) 0 1px 2px,rgba(255,255,255,.5) 0 0 0 1px inset;--shadow-sm:rgba(0,0,0,.05) 0 4px 8px,rgba(0,0,0,.1) 0 1px 2px;--max:1200px}*{box-sizing:border-box}body{margin:0;color:var(--color-ink-blue);background:var(--color-ghost-white);font-family:var(--font-suisseintl);font-size:var(--text-body);line-height:1.5;letter-spacing:-.28px;word-break:keep-all;background-image:radial-gradient(circle at 1px 1px,rgba(2,50,71,.08) 1px,transparent 0);background-size:24px 24px}button,input,select,textarea{font:inherit}button{cursor:pointer}h1,h2,h3,p{margin:0}h1{max-width:760px;font-size:clamp(36px,5vw,52px);letter-spacing:-1.44px;line-height:1.05;font-weight:600}h2{font-size:var(--text-heading-sm);line-height:1.33;letter-spacing:-.48px;font-weight:600}.app{width:min(var(--max),calc(100% - 32px));margin:var(--spacing-32) auto;padding:var(--spacing-24);background:rgba(255,255,255,.92);border:1px solid var(--color-steel-gray);border-radius:var(--radius-default);box-shadow:var(--shadow-subtle);backdrop-filter:blur(8px)}.top{display:grid;grid-template-columns:1fr auto;gap:var(--spacing-24);align-items:end;padding-bottom:var(--spacing-32);border-bottom:1px solid var(--color-steel-gray)}.eyebrow{font-size:12px;font-weight:500;color:var(--color-deep-plum);letter-spacing:.06em}.actions{display:flex;gap:var(--spacing-8);flex-wrap:wrap;justify-content:flex-end}.btn{min-height:40px;padding:8px 14px;border:1px solid var(--color-deep-plum);border-radius:var(--radius-default);background:rgba(255,255,255,.25);color:var(--color-deep-plum);font-weight:500;box-shadow:var(--shadow-subtle)}.btn.primary{background:var(--color-action-orange);border-color:var(--color-action-orange);color:#fff}.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(420px,.82fr);gap:var(--spacing-24);padding-top:var(--spacing-24);align-items:start}.form,.quote{background:var(--color-ghost-white);border:1px solid var(--color-steel-gray);border-radius:var(--radius-default);box-shadow:var(--shadow-subtle)}.group{padding:var(--spacing-24);border-bottom:1px solid var(--color-steel-gray)}.group:last-child{border-bottom:0}.group-head{display:flex;justify-content:space-between;gap:var(--spacing-16);align-items:flex-end;margin-bottom:var(--spacing-16)}.hint{font-size:13px;color:var(--color-slate-text)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--spacing-12)}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.field{display:grid;gap:6px}.label{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--color-charcoal-text)}.field input,.field select,.field textarea{width:100%;min-height:40px;border:1px solid var(--color-steel-gray);padding:8px 10px;background:#fff;color:var(--color-ink-blue);border-radius:var(--radius-default)}.field textarea{min-height:82px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--color-deep-plum);box-shadow:0 0 0 3px rgba(17,26,74,.08)}.tip{position:relative;display:inline-grid;place-items:center;width:18px;height:18px;border:1px solid var(--color-steel-gray);border-radius:50%;font-size:12px;line-height:1;color:var(--color-slate-text);background:#fff;font-style:normal}.tip:hover::after,.tip:focus::after{content:attr(data-tip);position:absolute;left:20px;top:-8px;z-index:20;width:320px;padding:10px 11px;background:var(--color-deep-plum);color:#fff;font-weight:500;font-size:12px;line-height:1.5;border-radius:8px;box-shadow:var(--shadow-sm)}.tip:hover::before,.tip:focus::before{content:"";position:absolute;left:16px;top:2px;border:6px solid transparent;border-right-color:var(--color-deep-plum);z-index:21}.note{padding:var(--spacing-16);background:var(--color-fog-gray);border-left:3px solid var(--color-action-orange);border-radius:8px;color:var(--color-charcoal-text)}.scope-card{display:grid;gap:10px;padding:var(--spacing-16);border:1px solid var(--color-steel-gray);border-radius:var(--radius-default);background:#fff;box-shadow:var(--shadow-subtle)}.scope-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--spacing-8)}.scope-summary div{padding:10px;border:1px solid var(--color-steel-gray);border-radius:8px;background:var(--color-fog-gray)}.scope-summary span{display:block;font-size:12px;color:var(--color-slate-text)}.scope-summary strong{display:block;margin-top:3px;color:var(--color-ink-blue)}.quote-wrap{position:sticky;top:16px}.quote{padding:var(--spacing-24)}.quote-top{display:grid;grid-template-columns:1fr auto;gap:var(--spacing-16);border-bottom:2px solid var(--color-deep-plum);padding-bottom:var(--spacing-18,18px)}.quote-title{font-size:29px;line-height:1.1;font-weight:600;letter-spacing:-.8px}.quote-meta{text-align:right;color:var(--color-slate-text);font-size:13px}.summary{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--color-steel-gray);border-radius:var(--radius-default);overflow:hidden;margin:18px 0}.summary div{padding:12px;border-right:1px solid var(--color-steel-gray);background:#fff}.summary div:last-child{border-right:0}.summary span{display:block;font-size:12px;color:var(--color-slate-text)}.summary strong{display:block;font-size:16px;margin-top:4px}.q-block{margin-top:20px}.q-block h3{font-size:16px;padding-bottom:7px;margin-bottom:8px;border-bottom:1px solid var(--color-steel-gray);color:var(--color-deep-plum)}table{width:100%;border-collapse:collapse;table-layout:fixed}th,td{padding:8px;border-bottom:1px solid var(--color-steel-gray);text-align:left;vertical-align:top}th{font-size:12px;color:var(--color-slate-text);font-weight:600}.num{text-align:right;white-space:nowrap;font-family:var(--font-sfmono);letter-spacing:0}.mini{display:grid;gap:5px;color:var(--color-charcoal-text)}.total{display:grid;gap:6px;justify-content:end;margin-top:18px}.total-line{display:grid;grid-template-columns:175px 170px;text-align:right;gap:10px}.total-line.final{font-size:23px;font-weight:700;border-top:2px solid var(--color-deep-plum);padding-top:8px;color:var(--color-deep-plum)}.empty{color:var(--color-slate-text)}.excluded{columns:2;color:var(--color-charcoal-text)}.excluded p{break-inside:avoid;margin:0 0 5px}.pill{display:inline-block;border:1px solid var(--color-steel-gray);background:var(--color-fog-gray);border-radius:8px;padding:2px 7px;font-size:12px;color:var(--color-charcoal-text)}@media(max-width:1100px){.top,.layout{grid-template-columns:1fr}.quote-wrap{position:static}.scope-summary{grid-template-columns:repeat(2,1fr)}.actions{justify-content:flex-start}}@media(max-width:760px){.app{width:100%;margin:0;padding:14px;border-left:0;border-right:0;border-radius:0}.grid,.grid.three,.summary,.quote-top,.scope-summary{grid-template-columns:1fr}.quote{padding:16px}.quote-meta{text-align:left}.summary div{border-right:0;border-bottom:1px solid var(--color-steel-gray)}.summary div:last-child{border-bottom:0}.total-line{grid-template-columns:1fr 1fr}.excluded{columns:1}.tip:hover::after,.tip:focus::after{left:auto;right:0;top:22px;width:250px}.tip:hover::before,.tip:focus::before{display:none}}@media print{body{background:#fff}.app{margin:0;width:auto;padding:0;border:0;box-shadow:none}.top,.form{display:none}.layout{display:block;padding:0}.quote-wrap{position:static}.quote{border:0;padding:0;box-shadow:none}}
+</style>
+<style>
+:root{
+  --font-inter:Inter,Pretendard,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --text-caption:10px;
+  --text-label:12px;
+  --text-body:14px;
+  --text-ui:16px;
+  --text-subheading:18px;
+  --text-title:20px;
+  --text-heading-sm:24px;
+  --text-heading:40px;
+  --text-display:48px;
+  --line-tight:1.1;
+  --line-heading:1.33;
+  --line-body:1.5;
+  --tracking-caption:.06em;
+  --tracking-body:-.28px;
+  --tracking-subheading:-.36px;
+  --tracking-heading-sm:-.48px;
+  --tracking-heading:-.8px;
+  --tracking-display:-1.44px;
+  --spacing-72:72px;
+  --spacing-80:80px;
+  --spacing-96:96px;
+  --radius-subtle:2px;
+  --section-gap:var(--spacing-48);
+  --element-gap:var(--spacing-24);
+  --component-gap:var(--spacing-12);
+  --field-gap:var(--spacing-8);
+  --control-height:44px;
+}
+body{font-family:var(--font-inter);font-size:var(--text-body);line-height:var(--line-body);letter-spacing:var(--tracking-body)}
+body{background:#000;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.09) 1px,transparent 0);background-size:24px 24px}
+.app{background:rgba(255,255,255,.94)}
+button,input,select,textarea{font-family:var(--font-suisseintl);font-size:var(--text-ui);line-height:var(--line-body)}
+h1{font-family:var(--font-suisseintl);font-size:clamp(var(--text-heading),5vw,52px);line-height:var(--line-tight);letter-spacing:var(--tracking-display);font-weight:600}
+h2{font-family:var(--font-suisseintl);font-size:var(--text-heading-sm);line-height:var(--line-heading);letter-spacing:var(--tracking-heading-sm);font-weight:600}
+.quote-title{font-family:var(--font-suisseintl);font-size:28px;line-height:var(--line-tight);letter-spacing:-.84px;font-weight:600}
+.q-block h3,.summary strong,.scope-summary strong{font-family:var(--font-suisseintl);font-size:var(--text-ui);line-height:var(--line-heading);letter-spacing:-.32px;font-weight:500}
+.eyebrow,.hint,.summary span,.scope-summary span,th,.pill{font-size:var(--text-label);line-height:var(--line-body)}
+.eyebrow{letter-spacing:var(--tracking-caption)}
+.app{padding:var(--element-gap)}
+.top{gap:var(--element-gap);padding-bottom:var(--spacing-32)}
+.layout{gap:var(--element-gap);padding-top:var(--element-gap)}
+.group{padding:var(--element-gap)}
+.group-head{gap:var(--spacing-16);margin-bottom:var(--spacing-16)}
+.grid{gap:var(--component-gap)}
+.field{gap:var(--field-gap)}
+.label{gap:var(--spacing-8);font-size:var(--text-label);line-height:var(--line-body);letter-spacing:0}
+.field input,.field select,.field textarea{min-height:var(--control-height);padding:var(--spacing-8) var(--spacing-12);font-size:var(--text-ui);border-radius:var(--radius-default)}
+.field textarea{min-height:96px}
+.btn{min-height:var(--control-height);padding:var(--spacing-8) var(--spacing-16);font-size:var(--text-body);font-weight:400}
+.btn.primary{font-weight:500}
+.note,.scope-card{padding:var(--spacing-16)}
+.scope-card{gap:var(--spacing-12)}
+.scope-summary{gap:var(--spacing-8)}
+.scope-summary div{padding:var(--spacing-12)}
+.quote{padding:var(--element-gap)}
+.quote-top{gap:var(--spacing-16);padding-bottom:var(--spacing-24)}
+.quote-meta{font-size:var(--text-label);line-height:var(--line-body)}
+.summary{margin:var(--spacing-24) 0}
+.summary div{padding:var(--spacing-12)}
+.summary strong{margin-top:var(--spacing-4)}
+.q-block{margin-top:var(--spacing-24)}
+.q-block h3{padding-bottom:var(--spacing-8);margin-bottom:var(--spacing-8)}
+th,td{padding:var(--spacing-8);line-height:var(--line-body)}
+.mini{gap:var(--spacing-8)}
+.total{gap:var(--spacing-8);margin-top:var(--spacing-24)}
+.total-line{gap:var(--spacing-12)}
+.total-line.final{font-size:var(--text-heading-sm);line-height:var(--line-heading);padding-top:var(--spacing-8)}
+.excluded p{margin:0 0 var(--spacing-8)}
+.pill{padding:var(--radius-subtle) var(--spacing-8)}
+@media(max-width:760px){.app{padding:var(--spacing-16)}.quote{padding:var(--spacing-16)}.group{padding:var(--spacing-20)}h1{font-size:36px}.quote-title{font-size:24px}}
+</style>
+<style>
+:root{
+  --color-black:#000;
+  --color-gray-900:#111;
+  --color-gray-800:#333;
+  --color-gray-700:#666;
+  --color-gray-600:#777;
+  --color-gray-500:#999;
+  --color-gray-400:#bbb;
+  --color-gray-300:#ccc;
+  --color-gray-200:#ddd;
+  --color-gray-100:#eee;
+  --color-gray-050:#f4f4f4;
+  --color-gray-025:#fafafa;
+  --color-white:#fff;
+  --color-brand-red:#ff0038;
+  --color-brand-orange:#ff5a2e;
+  --color-brand-magenta:#ff00ef;
+  --color-primary:#ff0038;
+  --semantic-success:#249356;
+  --semantic-info:#0b83e6;
+  --semantic-warning:#ffa700;
+  --semantic-danger:#ff0038;
+  --semantic-disabled-bg:#eee;
+  --semantic-disabled-text:#999;
+  --font-ui:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif;
+  --font-number:Roboto,Pretendard,system-ui,sans-serif;
+  --font-mono:"Roboto Mono","SF Mono",monospace;
+  --space-0:0;
+  --space-025:2px;
+  --space-050:4px;
+  --space-100:8px;
+  --space-150:12px;
+  --space-200:16px;
+  --space-300:24px;
+  --space-400:32px;
+  --space-500:40px;
+  --space-600:48px;
+  --space-800:64px;
+  --space-1000:80px;
+  --space-1200:96px;
+  --space-1600:128px;
+  --container-max:1440px;
+  --container-wide:1680px;
+  --gutter:24px;
+  --margin-desktop:80px;
+  --button-height-md:48px;
+  --button-height-sm:40px;
+  --button-height-xs:32px;
+  --button-padding-x-md:20px;
+  --button-padding-x-sm:16px;
+  --button-padding-x-xs:12px;
+  --button-radius:8px;
+  --input-height-md:48px;
+  --input-height-sm:40px;
+  --input-padding-x:16px;
+  --input-radius:8px;
+  --input-border:#ccc;
+  --input-border-focus:#111;
+  --input-border-error:#ff0038;
+  --card-radius:12px;
+  --card-padding-sm:16px;
+  --card-padding-md:24px;
+  --card-padding-lg:32px;
+  --card-border:#eee;
+  --card-bg:#fff;
+  --max:var(--container-max);
+}
+body{font-family:var(--font-ui);color:var(--color-gray-900);background-color:var(--color-black)}
+.app{width:min(var(--container-max),calc(100% - var(--margin-desktop) * 2));padding:var(--space-300);border-color:rgba(255,255,255,.16);border-radius:var(--card-radius);background:rgba(250,250,250,.96);box-shadow:0 24px 80px rgba(0,0,0,.28)}
+.top{gap:var(--space-300);padding-bottom:var(--space-400);border-bottom-color:var(--color-gray-200)}
+.layout{grid-template-columns:minmax(0,1fr) minmax(456px,.78fr);gap:var(--gutter);padding-top:var(--space-300)}
+h1{font-size:clamp(40px,4vw,56px);line-height:64px;font-weight:700;letter-spacing:-.02em;color:var(--color-gray-900)}
+h2{font-size:24px;line-height:34px;font-weight:700;letter-spacing:-.01em;color:var(--color-gray-900)}
+.quote-title{font-size:32px;line-height:42px;font-weight:700;letter-spacing:-.01em;color:var(--color-gray-900)}
+.eyebrow{color:var(--color-primary);font-weight:700;letter-spacing:.06em}
+.hint{font-size:14px;line-height:22px;color:var(--color-gray-600)}
+.form,.quote{border:1px solid var(--card-border);border-radius:var(--card-radius);background:var(--card-bg);box-shadow:none}
+.group{padding:var(--card-padding-md);border-bottom-color:var(--color-gray-100)}
+.group-head{align-items:flex-start;gap:var(--space-200);margin-bottom:var(--space-300)}
+.grid{gap:var(--space-200)}
+.grid.three{gap:var(--space-200)}
+.field{gap:var(--space-100)}
+.label{font-size:14px;line-height:22px;font-weight:700;color:var(--color-gray-900)}
+.field input,.field select,.field textarea{min-height:var(--input-height-md);padding:0 var(--input-padding-x);border:1px solid var(--input-border);border-radius:var(--input-radius);background:var(--color-white);color:var(--color-gray-900);font-family:var(--font-ui);font-size:16px;line-height:26px}
+.field input,.field select{height:var(--input-height-md);padding-left:var(--input-padding-x);padding-right:var(--input-padding-x)}
+.field select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--color-gray-700) 50%),linear-gradient(135deg,var(--color-gray-700) 50%,transparent 50%);background-position:calc(100% - 22px) 20px,calc(100% - 16px) 20px;background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-right:var(--input-padding-x)}
+.field textarea{min-height:112px;padding-top:var(--space-150);padding-bottom:var(--space-150)}
+.field input::placeholder,.field textarea::placeholder{color:var(--color-gray-500)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--input-border-focus);box-shadow:0 0 0 2px rgba(17,17,17,.12)}
+.field input:disabled,.field select:disabled,.field textarea:disabled{background:var(--semantic-disabled-bg);color:var(--semantic-disabled-text)}
+.btn{min-height:var(--button-height-md);padding:0 var(--button-padding-x-md);border:1px solid var(--color-gray-300);border-radius:var(--button-radius);background:var(--color-white);color:var(--color-gray-900);font-family:var(--font-ui);font-size:16px;line-height:26px;font-weight:700;box-shadow:none;transition:background-color .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}
+.btn:hover{border-color:var(--color-gray-900);background:var(--color-gray-025)}
+.btn:active{transform:translateY(1px);background:var(--color-gray-100)}
+.btn:focus-visible{outline:2px solid var(--color-gray-900);outline-offset:2px}
+.btn.primary{border-color:var(--color-primary);background:var(--color-primary);color:var(--color-white)}
+.btn.primary:hover{border-color:#d90030;background:#d90030}
+.btn.primary:active{background:#b80029}
+.btn:disabled{border-color:var(--color-gray-100);background:var(--semantic-disabled-bg);color:var(--semantic-disabled-text);cursor:not-allowed}
+.note{padding:var(--space-200);border-left:0;border-radius:var(--card-radius);background:var(--color-gray-025);color:var(--color-gray-800)}
+.scope-card{gap:var(--space-200);padding:var(--card-padding-md);border-color:var(--card-border);border-radius:var(--card-radius);box-shadow:none}
+.scope-summary{gap:var(--space-100)}
+.scope-summary div,.summary div{background:var(--color-gray-025)}
+.scope-summary div{padding:var(--space-200);border-color:var(--color-gray-100);border-radius:var(--button-radius)}
+.scope-summary span,.summary span,th{font-size:12px;line-height:18px;font-weight:700;color:var(--color-gray-600)}
+.scope-summary strong,.summary strong{font-size:16px;line-height:26px;font-weight:700;color:var(--color-gray-900)}
+.tip{width:24px;height:24px;border-color:var(--color-gray-200);color:var(--color-gray-600)}
+.tip:hover::after,.tip:focus::after{background:var(--color-gray-900);border-radius:var(--button-radius)}
+.tip:hover::before,.tip:focus::before{border-right-color:var(--color-gray-900)}
+.quote{padding:var(--card-padding-lg)}
+.quote-top{padding-bottom:var(--space-300);border-bottom-color:var(--color-gray-900)}
+.quote-meta{font-size:12px;line-height:18px;color:var(--color-gray-600)}
+.summary{margin:var(--space-300) 0;border-color:var(--color-gray-100);border-radius:var(--card-radius)}
+.summary div{padding:var(--space-200);border-right-color:var(--color-gray-100)}
+.q-block{margin-top:var(--space-400)}
+.q-block h3{font-size:20px;line-height:30px;font-weight:700;color:var(--color-gray-900);border-bottom-color:var(--color-gray-200)}
+.q-block table{border-top:1px solid var(--color-gray-900)}
+th,td{padding:var(--space-150) var(--space-100);border-bottom-color:var(--color-gray-100)}
+td{font-size:14px;line-height:22px;color:var(--color-gray-800)}
+.num{font-family:var(--font-number);font-variant-numeric:tabular-nums;color:var(--color-gray-900)}
+.mini{gap:var(--space-100);color:var(--color-gray-800)}
+.total{gap:var(--space-100);margin-top:var(--space-300)}
+.total-line{grid-template-columns:180px 180px;gap:var(--space-200);font-size:14px;line-height:22px;color:var(--color-gray-700)}
+.total-line strong{font-family:var(--font-number);font-variant-numeric:tabular-nums;color:var(--color-gray-900)}
+.total-line.final{font-size:24px;line-height:34px;border-top-color:var(--color-gray-900);color:var(--color-primary)}
+.total-line.final strong{color:var(--color-primary)}
+.pill{border:1px solid var(--color-gray-200);border-radius:999px;background:var(--color-gray-050);color:var(--color-gray-700);font-size:12px;line-height:18px;font-weight:700}
+.empty{color:var(--color-gray-500)}
+.excluded{color:var(--color-gray-800)}
+.actions:has(#presetBtn){gap:var(--space-200)}
+#presetDesc{font-size:14px;line-height:22px;color:var(--color-gray-800)}
+@media(max-width:1199px){.app{width:min(100% - 64px,var(--container-max))}.layout{grid-template-columns:1fr}.quote-wrap{position:static}.scope-summary{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:767px){.app{width:100%;margin:0;padding:var(--space-200);border-radius:0;overflow:hidden}.top{gap:var(--space-200);padding-bottom:var(--space-300)}.layout{grid-template-columns:minmax(0,1fr);gap:var(--space-200);padding-top:var(--space-200)}.form,.quote-wrap,.quote{min-width:0}.group{padding:var(--space-200)}.group-head{display:block}.group-head .hint{margin-top:var(--space-050)}h1{font-size:36px;line-height:44px}.grid,.grid.three,.summary,.quote-top,.scope-summary{grid-template-columns:1fr}.field input,.field select,.field textarea{min-height:var(--input-height-md)}.btn{width:auto;min-height:var(--button-height-md)}.quote{padding:var(--space-200);overflow:hidden}.quote-title{font-size:22px;line-height:30px}.summary div{border-right:0}.q-block{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}.q-block table{min-width:520px}.total-line{grid-template-columns:1fr 1fr}.actions:has(#presetBtn){align-items:flex-start!important}.actions:has(#presetBtn) .btn{width:100%}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="top">
+  <div><p class="eyebrow">DESIGN-ONLY QUOTATION / SCOPE & SCHEDULE</p><h1>디자인 견적·일정 산정서 생성기</h1></div>
+  <div class="actions"><button class="btn" id="sampleBtn" type="button">샘플 입력</button><button class="btn" id="resetBtn" type="button">초기화</button><button class="btn primary" id="printBtn" type="button">인쇄 / PDF</button></div>
+</header>
+<div class="layout">
+<form class="form" id="form">
+  <section class="group">
+    <div class="group-head"><h2>1. 프로젝트 기본 정보</h2><p class="hint">프로젝트 성격만 먼저 구분</p></div>
+    <div class="grid">
+      <label class="field"><span class="label">프로젝트명 <i class="tip" tabindex="0" data-tip="견적서 상단에 표시되는 프로젝트명입니다. 예: 기업 웹사이트 리뉴얼, 상세페이지 디자인, SaaS 대시보드 UI">?</i></span><input name="projectName" placeholder="예: 기업 웹사이트 리뉴얼 디자인"></label>
+      <label class="field"><span class="label">클라이언트 <i class="tip" tabindex="0" data-tip="수신처 또는 발주사 이름입니다. 견적서 제출용으로 사용됩니다.">?</i></span><input name="clientName" placeholder="클라이언트명"></label>
+      <label class="field"><span class="label">디자이너/회사 <i class="tip" tabindex="0" data-tip="견적서를 발행하는 디자이너, 스튜디오, 회사명을 입력합니다.">?</i></span><input name="designerName" placeholder="디자이너 / 스튜디오명"></label>
+      <label class="field"><span class="label">견적일 <i class="tip" tabindex="0" data-tip="견적 유효기간 계산의 기준일입니다. 일반적으로 7~14일 유효로 잡습니다.">?</i></span><input type="date" name="issueDate"></label>
+      <label class="field"><span class="label">견적 유효기간 <i class="tip" tabindex="0" data-tip="일정과 단가는 변동될 수 있으므로 견적 유효기간을 제한합니다. 보통 7~14일이 현실적입니다.">?</i></span><input type="number" name="validDays" min="1" value="14"></label>
+      <label class="field"><span class="label">제작 채널 <i class="tip" tabindex="0" data-tip="산출물이 적용될 기기/환경입니다. 웹, 모바일 웹, 앱, 관리자처럼 제작 환경만 선택합니다. 사이트 성격은 아래 사이트 유형에서 따로 고릅니다.">?</i></span><select name="projectChannel"><option value="responsive_web">반응형 웹</option><option value="desktop_web">PC 웹</option><option value="mobile_web">모바일 웹</option><option value="native_app">모바일 앱</option><option value="admin">관리자 화면</option></select></label>
+      <label class="field"><span class="label">사이트 유형 / 목적 화면 <i class="tip" tabindex="0" data-tip="디비컷 같은 웹디자인 레퍼런스 분류를 참고해, 화면이 어떤 목적의 사이트인지 고릅니다. 기업/브랜드, 캠페인, 제품소개, 커머스, 콘텐츠, 신청/예약, 업무 화면은 설계 기준이 다릅니다.">?</i></span><select name="projectPurpose"><option value="corporate">기업 / 브랜드</option><option value="campaign">프로모션 / 캠페인</option><option value="product">제품 / 서비스 소개</option><option value="commerce">쇼핑몰 / 커머스</option><option value="content">콘텐츠 / 매거진 / 포털</option><option value="recruit_ir">채용 / IR / 홍보</option><option value="flow">회원 / 신청 / 예약</option><option value="dashboard">대시보드 / 업무 화면</option><option value="etc">기타</option></select></label>
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-head"><h2>2. 통합 작업 범위</h2><p class="hint">기획 상태·작업 수준·범위·일정 보정을 한 번에 결정</p></div>
+    <label class="field"><span class="label">작업 범위 패키지 <i class="tip" tabindex="0" data-tip="자료가 얼마나 정리되어 있는지에 따라 디자인 전 정리 공수가 달라집니다. 가장 가까운 상태를 고르면 비용 보정과 일정 보정이 자동 적용됩니다.">?</i></span>
+      <select name="scopePackage"><option value="design_only">자료 확정 / 디자인만 진행</option><option value="structure_support">자료 있음 / 화면 구성만 보완</option><option value="structure_planning">초안 있음 / 구조 정리 필요</option><option value="planning_full">자료 많음 / 기획 정리 필요</option><option value="proposal_high">방향 제안 / 고퀄 시안 필요</option><option value="idea_first">아이디어 단계 / 기획부터 필요</option></select>
+    </label>
+    <div class="scope-card" style="margin-top:12px">
+      <div class="scope-summary"><div><span>견적 상태</span><strong id="scopeStatus">-</strong></div><div><span>비용 보정</span><strong id="scopeRate">-</strong></div><div><span>일정 보정</span><strong id="scopeDayRate">-</strong></div><div><span>기본 포함</span><strong id="scopeIncluded">-</strong></div></div>
+      <div class="mini" id="scopeDesc"></div>
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-head"><h2>3. 작업자 경력</h2><p class="hint">단가 차이는 패키지가 아니라 경력·책임 범위에서 보정</p></div>
+    <div class="grid">
+      <label class="field"><span class="label">경력 등급 <i class="tip" tabindex="0" data-tip="작업을 누가 책임지는지에 따른 단가 보정입니다. 패키지는 자료 상태 보정만 작게 적용하고, 실제 단가 차이는 경력 등급에서 반영합니다.">?</i></span><select name="careerGrade"><option value="newbie">신입 / 보조</option><option value="junior">초급</option><option value="mid" selected>중급</option><option value="senior">고급</option><option value="expert">특급</option><option value="director">총괄</option></select></label>
+      <label class="field"><span class="label">경력 적용 기준 <i class="tip" tabindex="0" data-tip="제작만 맡는 경우는 낮게, 구조 판단·검수·클라이언트 대응·품질 책임까지 맡는 경우는 높게 봅니다.">?</i></span><select name="careerMode"><option value="low">낮게</option><option value="mid" selected>기준</option><option value="high">높게</option></select></label>
+    </div>
+    <div class="note" style="margin-top:12px">자료 상태에 따른 패키지 보정은 작게 적용하고, 작업자 숙련도·판단 책임·검수 책임은 경력 보정으로 분리합니다.</div>
+  </section>
+
+  <section class="group">
+    <div class="group-head"><h2>4. 화면 수량</h2><p class="hint">화면 수가 일정과 비용의 기본값</p></div>
+    <div class="note" style="margin-bottom:12px">
+      <div class="actions" style="justify-content:space-between;align-items:center"><p id="presetDesc">사이트 유형을 선택하면 기본 페이지 세트를 적용할 수 있습니다. 이후 화면 수를 추가하면 비용과 일정이 함께 늘어납니다.</p><button class="btn" id="presetBtn" type="button">유형 기본값 적용</button></div>
+    </div>
+    <div class="grid three">
+      <label class="field"><span class="label">메인 화면 <i class="tip" tabindex="0" data-tip="홈, 메인, 캠페인 첫 화면처럼 전체 톤앤매너와 정보 우선순위를 결정하는 핵심 화면입니다. 서브 화면과 분리해 1장당 25만 원부터 산정합니다. 기준: 1장당 0.8영업일.">?</i></span><input type="number" min="0" name="mainScreens" placeholder="0"></label>
+      <label class="field"><span class="label">PC 하 <i class="tip" tabindex="0" data-tip="단순 텍스트/이미지 정보 화면. 이미 정해진 템플릿이나 반복 구조에 가까운 화면입니다. 기준: 1장당 0.25영업일.">?</i></span><input type="number" min="0" name="pcLow" placeholder="0"></label>
+      <label class="field"><span class="label">PC 중 <i class="tip" tabindex="0" data-tip="일반 서브페이지, 섹션 조합, 카드/리스트 등 기본 정보 구조가 필요한 화면입니다. 기준: 1장당 0.5영업일.">?</i></span><input type="number" min="0" name="pcMid" placeholder="0"></label>
+      <label class="field"><span class="label">PC 상 <i class="tip" tabindex="0" data-tip="메인, 상세, 랜딩, 대시보드처럼 구조 판단·비주얼 완성도·정보 우선순위가 필요한 화면입니다. 기준: 1장당 0.8영업일.">?</i></span><input type="number" min="0" name="pcHigh" placeholder="0"></label>
+      <label class="field"><span class="label">MO Copy <i class="tip" tabindex="0" data-tip="PC 구조를 모바일로 단순 변환하는 범위입니다. 모바일 전용 UX 재설계가 아니므로 비용과 일정이 낮습니다. 기준: 1장당 0.2영업일.">?</i></span><input type="number" min="0" name="moCopy" placeholder="0"></label>
+      <label class="field"><span class="label">MO Design <i class="tip" tabindex="0" data-tip="모바일 전용 구조, 순서, 컴포넌트, 사용성까지 다시 설계하는 범위입니다. 반응형이라는 말로 묶지 않고 별도 산정합니다. 기준: 1장당 0.35영업일.">?</i></span><input type="number" min="0" name="moDesign" placeholder="0"></label>
+      <label class="field"><span class="label">팝업/상태 화면 <i class="tip" tabindex="0" data-tip="모달, 팝업, 빈 상태, 오류 상태, 완료 상태 등 부가 화면입니다. 20개 이상이면 대량 상태값 작업으로 별도 조정이 필요합니다. 기준: 1장당 0.15영업일.">?</i></span><input type="number" min="0" name="stateScreens" placeholder="0"></label>
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-head"><h2>5. AI 리소스</h2><p class="hint">AI 생성·선별·검수 비용은 별도 산정</p></div>
+    <div class="grid three">
+      <label class="field"><span class="label">AI 이미지 컷 <i class="tip" tabindex="0" data-tip="시안 또는 최종 후보 이미지 생성을 위해 반복 생성, 선별, 적용까지 필요한 컷 수입니다. 단순 크레딧 비용이 아니라 생성·선별 운영 시간을 포함합니다.">?</i></span><input type="number" min="0" name="aiImageCount" placeholder="0"></label>
+      <label class="field"><span class="label">AI 검수/보정 시간 <i class="tip" tabindex="0" data-tip="AI 티 제거, 브랜드 적합성 검토, 상업 사용 가능성 확인, 리터칭 방향 정리, 카피/코드 초안 검수에 쓰는 시간입니다.">?</i></span><input type="number" min="0" step="0.5" name="aiReviewHours" placeholder="0"></label>
+      <label class="field"><span class="label">AI 툴·크레딧 실비 <i class="tip" tabindex="0" data-tip="유료 생성 크레딧, 외부 AI 툴 구독, 고해상도 업스케일, 유료 리소스 사용 비용입니다. 실제 발생 또는 예상 실비로 입력합니다.">?</i></span><input type="number" min="0" step="1000" name="aiToolCost" placeholder="0"></label>
+    </div>
+    <div class="note" style="margin-top:12px">AI 활용은 단가 인하 항목이 아니라 생성·선별·검수·보정·상업 사용 확인이 필요한 리소스 운영 항목입니다.</div>
+  </section>
+
+  <section class="group">
+    <div class="group-head"><h2>6. 시안 기준</h2><p class="hint">시안 수와 차별화 수준이 일정 증가 요인</p></div>
+    <div class="grid three">
+      <label class="field"><span class="label">시안 수 <i class="tip" tabindex="0" data-tip="시안 수가 늘면 단순 복사가 아니라 의사결정용 비교안 제작 시간이 추가됩니다. 2안부터 추가 일정과 보정 비용이 붙습니다.">?</i></span><input type="number" min="1" name="conceptCount" value="1"></label>
+      <label class="field"><span class="label">차별화 수준 <i class="tip" tabindex="0" data-tip="동일 구조 변형은 가장 낮고, 다른 톤앤매너는 레이아웃/비주얼 차이가 필요하며, 완전 다른 콘셉트는 정보 구조와 디자인 해석부터 달라집니다.">?</i></span><select name="conceptDepth"><option value="same">동일 구조 베리에이션</option><option value="tone">다른 톤앤매너</option><option value="concept">완전 다른 콘셉트</option></select></label>
+      <label class="field"><span class="label">레퍼런스 수준 <i class="tip" tabindex="0" data-tip="대기업·캠페인급 레퍼런스를 요구하면 자료 해석, 비주얼 완성도, 이미지/그래픽 판단 시간이 늘어납니다.">?</i></span><select name="refLevel"><option value="normal">일반</option><option value="brand">브랜드/대기업급</option><option value="campaign">캠페인/제안용 고퀄</option></select></label>
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-head"><h2>7. 일정·피드백 조건</h2><p class="hint">일정이 짧으면 비용이 올라감</p></div>
+    <div class="grid three">
+      <label class="field"><span class="label">일정 조건 <i class="tip" tabindex="0" data-tip="정상 일정은 예상 영업일 기준입니다. 빠른 일정은 검토/제작 시간을 압축해야 하므로 비용이 올라갑니다. 일정은 비용입니다.">?</i></span><select name="deadline"><option value="0">정상 일정</option><option value="0.10">빠른 일정 +10%</option><option value="0.20">긴급 일정 +20%</option><option value="0.35">초긴급 일정 +35%</option></select></label>
+      <label class="field"><span class="label">기본 수정 횟수 <i class="tip" tabindex="0" data-tip="수정은 취합 피드백 기준입니다. 여러 명이 따로 주는 피드백은 한 번으로 보지 않고 취합본 기준으로 처리해야 합니다.">?</i></span><input type="number" min="0" name="revisionIncluded" value="2"></label>
+      <label class="field"><span class="label">피드백 기한 <i class="tip" tabindex="0" data-tip="피드백 기한이 없으면 일정이 무너집니다. 시안 전달 후 3일 이내 회신을 기본으로 잡고, 지연 시 납품일도 자동 연장됩니다.">?</i></span><input type="number" min="1" name="feedbackDays" value="3"></label>
+      <label class="field"><span class="label">대량 수정 기준 <i class="tip" tabindex="0" data-tip="자잘한 수정 50개는 단순 수정이 아니라 QA 업무입니다. 20개 이상부터는 대량 수정/검수 또는 추가 화면 작업으로 분리하는 기준입니다.">?</i></span><input type="number" min="1" name="bulkIssueLimit" value="20"></label>
+      <label class="field"><span class="label">선금 비율 <i class="tip" tabindex="0" data-tip="일정 확정과 착수 기준입니다. 보통 50% 선금, 50% 잔금 구조가 안전합니다.">?</i></span><input type="number" min="0" max="100" name="depositRate" value="50"></label>
+      <label class="field"><span class="label">VAT <i class="tip" tabindex="0" data-tip="세금계산서 발행 또는 사업자 거래 시 부가세 포함 여부를 명확히 표시합니다.">?</i></span><select name="vat"><option value="no">VAT 별도/미포함</option><option value="yes">VAT 10% 포함</option></select></label>
+    </div>
+    <div class="note" style="margin-top:12px">예상 일정은 화면 수량 × 화면별 소요일 + 통합 범위 보정 + 시안 보정으로 자동 계산됩니다. 비용도 같은 기준으로 움직입니다.</div>
+  </section>
+
+  <section class="group">
+    <div class="group-head"><h2>8. 제외 범위</h2><p class="hint">개발 제외 조건을 견적서에 자동 표기</p></div>
+    <div class="excluded" id="excludedList"></div>
+    <div style="border-top:1px solid var(--line2);margin:16px 0"></div>
+    <label class="field"><span class="label">비고 / 특약 <i class="tip" tabindex="0" data-tip="프로젝트별 특수 조건을 적습니다. 예: 원고 고객사 제공, 이미지 구매비 별도, 특정 자료 제공 전까지 일정 미확정 등.">?</i></span><textarea name="memo" placeholder="예: 본 견적은 디자인 산출물 기준이며, 개발/퍼블리싱은 포함하지 않습니다."></textarea></label>
+  </section>
+</form>
+
+<aside class="quote-wrap">
+<section class="quote" id="quote">
+  <div class="quote-top"><div><p class="eyebrow">QUOTATION</p><p class="quote-title">디자인 견적·일정 산정서</p></div><div class="quote-meta"><p id="qNo"></p><p id="qDate"></p><p id="qValid"></p></div></div>
+  <div class="summary"><div><span>프로젝트</span><strong id="sProject">-</strong></div><div><span>채널 / 유형</span><strong id="sType">-</strong></div><div><span>예상 일정</span><strong id="sSchedule">-</strong></div><div><span>총 견적</span><strong id="sTotal">0원</strong></div></div>
+  <div class="q-block"><h3>견적 항목</h3><table><thead><tr><th>항목</th><th class="num">수량</th><th class="num">단가</th><th class="num">금액</th></tr></thead><tbody id="qRows"></tbody></table></div>
+  <div class="total"><div class="total-line"><span>작업 산정 소계</span><strong id="subtotal">0원</strong></div><div class="total-line"><span>경력 보정</span><strong id="careerFee">0원</strong></div><div class="total-line"><span>자료 상태 보정</span><strong id="scopeFee">0원</strong></div><div class="total-line"><span>시안/레퍼런스 보정</span><strong id="conceptFee">0원</strong></div><div class="total-line"><span>일정 가산</span><strong id="deadlineFee">0원</strong></div><div class="total-line"><span>VAT</span><strong id="vatFee">0원</strong></div><div class="total-line final"><span>합계</span><strong id="grandTotal">0원</strong></div><div class="total-line"><span>선금</span><strong id="deposit">0원</strong></div><div class="total-line"><span>잔금</span><strong id="balance">0원</strong></div></div>
+  <div class="q-block"><h3>일정 산정 기준</h3><div class="mini" id="scheduleTerms"></div></div>
+  <div class="q-block"><h3>통합 범위 확정 조건</h3><div class="mini" id="scopeTerms"></div></div>
+  <div class="q-block"><h3>수정 및 피드백 조건</h3><div class="mini" id="revisionTerms"></div></div>
+  <div class="q-block"><h3>제외 범위</h3><div class="mini" id="exclusionsOut"></div></div>
+  <div class="q-block"><h3>비고</h3><p class="empty" id="memoOut">-</p></div>
+</section>
+</aside>
+</div>
+</main>
+<script>
+const form=document.getElementById('form');const fmt=new Intl.NumberFormat('ko-KR');const won=n=>fmt.format(Math.round(n||0))+'원';const val=n=>form.elements[n]?.value||'';const num=n=>Number(form.elements[n]?.value||0);const today=()=>new Date().toISOString().slice(0,10);const esc=s=>String(s||'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const screenRates={mainScreens:250000,pcLow:25000,pcMid:50000,pcHigh:80000,moCopy:25000,moDesign:40000,stateScreens:20000};
+const screenDays={mainScreens:.8,pcLow:.15,pcMid:.3,pcHigh:.5,moCopy:.12,moDesign:.22,stateScreens:.08};
+const screenLabels={mainScreens:'메인 화면',pcLow:'PC 하 화면',pcMid:'PC 중 화면',pcHigh:'PC 상 화면',moCopy:'MO Copy 화면',moDesign:'MO Design 화면',stateScreens:'팝업/모달/상태 화면'};
+const screenFields=Object.keys(screenRates);
+const aiRates={aiImageCount:15000,aiReviewHours:35000};
+const aiDays={aiImageCount:.05,aiReviewHours:.125,aiToolCost:0};
+const aiLabels={aiImageCount:'AI 이미지 생성·선별',aiReviewHours:'AI 검수/보정 시간',aiToolCost:'AI 툴·크레딧 실비'};
+const basePresets={
+ corporate:{desc:'기업/브랜드 기본: 메인, 회사/브랜드 소개, 서비스, 강점, 포트폴리오, 문의/오시는 길 중심',screens:{mainScreens:1,pcLow:4,pcMid:5,pcHigh:1,stateScreens:0}},
+ campaign:{desc:'프로모션/캠페인 기본: 메인, 혜택/메시지, 상세 섹션, 참여/CTA, 유의사항 중심',screens:{mainScreens:1,pcLow:1,pcMid:2,pcHigh:2,stateScreens:1}},
+ product:{desc:'제품/서비스 소개 기본: 메인, 제품 상세, 기능, 가격/플랜, 사례, FAQ/문의 중심',screens:{mainScreens:1,pcLow:2,pcMid:3,pcHigh:2,stateScreens:1}},
+ commerce:{desc:'쇼핑몰/커머스 기본: 메인, 리스트, 상세, 장바구니, 주문, 마이페이지, 상태 화면 중심',screens:{mainScreens:1,pcLow:5,pcMid:5,pcHigh:4,stateScreens:4}},
+ content:{desc:'콘텐츠/매거진/포털 기본: 메인, 카테고리, 리스트, 상세, 검색, 태그/큐레이션 중심',screens:{mainScreens:1,pcLow:6,pcMid:8,pcHigh:3,stateScreens:2}},
+ recruit_ir:{desc:'채용/IR/홍보 기본: 메인, 회사소개, 채용공고, 직무상세, IR자료, 공지/문의 중심',screens:{mainScreens:1,pcLow:4,pcMid:4,pcHigh:1,stateScreens:1}},
+ flow:{desc:'회원/신청/예약 기본: 메인, 입력 폼, 확인, 완료, 마이페이지, 오류/빈 상태 중심',screens:{mainScreens:1,pcLow:2,pcMid:5,pcHigh:3,stateScreens:6}},
+ dashboard:{desc:'대시보드/업무 화면 기본: 메인 대시보드, 리스트, 상세, 작성/수정, 권한, 상태값 중심',screens:{mainScreens:1,pcLow:3,pcMid:7,pcHigh:6,stateScreens:8}},
+ etc:{desc:'기타 기본: 메인과 일반 서브 화면 중심. 실제 목적에 맞춰 추가 조정 필요',screens:{mainScreens:1,pcLow:1,pcMid:3,pcHigh:1,stateScreens:0}}
+};
+const packages={
+ design_only:{status:'확정 견적',name:'자료 확정 / 디자인만 진행',costRate:0,dayRate:0,minDays:0,included:'디자인 제작만 포함',desc:'원고, 메뉴 구조, 화면 구성, 이미지가 확정된 상태입니다. 받은 자료를 기준으로 화면 디자인만 진행합니다.'},
+ structure_support:{status:'확정 견적',name:'자료 있음 / 화면 구성만 보완',costRate:.02,dayRate:.10,minDays:.5,included:'간단한 화면 구성 보완',desc:'자료와 원고는 있으나 화면 안에서 어떤 순서와 비중으로 보여줄지 일부 정리가 필요한 상태입니다.'},
+ structure_planning:{status:'조건부 견적',name:'초안 있음 / 구조 정리 필요',costRate:.04,dayRate:.20,minDays:1,included:'IA·섹션 구조 정리',desc:'초안이나 기획서는 있으나 메뉴, 섹션 흐름, 화면 구조를 디자인 전에 한 번 정리해야 하는 상태입니다.'},
+ planning_full:{status:'가견적',name:'자료 많음 / 기획 정리 필요',costRate:.08,dayRate:.35,minDays:2,included:'기획·IA·콘텐츠 정리',desc:'자료는 많지만 우선순위, 페이지 목적, 포함/제외 내용이 정리되지 않아 디자인 전 기획 정리가 필요한 상태입니다.'},
+ proposal_high:{status:'조건부 견적',name:'방향 제안 / 고퀄 시안 필요',costRate:.07,dayRate:.30,minDays:1.5,included:'컨셉·톤앤매너 제안',desc:'클라이언트 설득이나 내부 보고를 위해 디자인 방향, 톤앤매너, 비주얼 완성도를 높여 제안해야 하는 상태입니다.'},
+ idea_first:{status:'가견적',name:'아이디어 단계 / 기획부터 필요',costRate:.12,dayRate:.50,minDays:3,included:'기획 선행 작업 필요',desc:'아이디어만 있거나 화면 수, 원고, 메뉴 구조가 정해지지 않은 상태입니다. 디자인 전에 기획 범위부터 확정해야 합니다.'}
+};
+const careerRates={
+ newbie:{label:'신입 / 보조',low:-.25,mid:-.20,high:-.15,desc:'정리·보조 중심. 단독 구조 판단 책임은 제한'},
+ junior:{label:'초급',low:-.15,mid:-.10,high:-.05,desc:'확정 자료 기반 제작 중심'},
+ mid:{label:'중급',low:0,mid:0,high:.05,desc:'일반 UI 제작과 기본 판단 책임'},
+ senior:{label:'고급',low:.10,mid:.18,high:.25,desc:'구조 판단·완성도·검수 책임 포함'},
+ expert:{label:'특급',low:.25,mid:.35,high:.50,desc:'고난도 화면·방향 판단·핸드오프 책임 포함'},
+ director:{label:'총괄',low:.45,mid:.60,high:.80,desc:'디렉션·범위 관리·전체 품질 책임 포함'}
+};
+const exclusions=['개발','퍼블리싱','HTML/CSS 코딩','서버/호스팅/도메인','백엔드/관리자 개발','API 연동','지도/GA/스크립트 연동','보안/접근성 인증','운영/유지보수','유료 이미지·폰트·영상 구매비','원고 작성/카피라이팅','브랜드 로고 신규 제작','외부 업체 상시 대응','대량 QA/검수 업무'];
+const channelLabels={responsive_web:'반응형 웹',desktop_web:'PC 웹',mobile_web:'모바일 웹',native_app:'모바일 앱',admin:'관리자 화면'};
+const purposeLabels={corporate:'기업 / 브랜드',campaign:'프로모션 / 캠페인',product:'제품 / 서비스 소개',commerce:'쇼핑몰 / 커머스',content:'콘텐츠 / 매거진 / 포털',recruit_ir:'채용 / IR / 홍보',flow:'회원 / 신청 / 예약',dashboard:'대시보드 / 업무 화면',etc:'기타'};
+function projectTypeLabel(){let channel=channelLabels[val('projectChannel')]||'-';let purpose=purposeLabels[val('projectPurpose')]||'-';return `${channel} · ${purpose}`}
+function pkg(){return packages[val('scopePackage')]||packages.design_only}
+function career(){return careerRates[val('careerGrade')]||careerRates.mid}
+function careerMode(){return val('careerMode')||'mid'}
+function screenRows(){let rows=[];Object.keys(screenRates).forEach(k=>{let q=num(k);if(q>0)rows.push({key:k,label:screenLabels[k],qty:q,unit:'장',rate:screenRates[k],amount:q*screenRates[k],days:q*screenDays[k]})});return rows}
+function aiRows(){let rows=[];let imageCount=num('aiImageCount');if(imageCount>0)rows.push({key:'aiImageCount',label:aiLabels.aiImageCount,qty:imageCount,unit:'컷',rate:aiRates.aiImageCount,amount:imageCount*aiRates.aiImageCount,days:imageCount*aiDays.aiImageCount});let reviewHours=num('aiReviewHours');if(reviewHours>0)rows.push({key:'aiReviewHours',label:aiLabels.aiReviewHours,qty:reviewHours,unit:'시간',rate:aiRates.aiReviewHours,amount:reviewHours*aiRates.aiReviewHours,days:reviewHours*aiDays.aiReviewHours});let toolCost=num('aiToolCost');if(toolCost>0)rows.push({key:'aiToolCost',label:aiLabels.aiToolCost,qty:1,unit:'식',rate:toolCost,amount:toolCost,days:0});return rows}
+function presetForCurrent(){let base=basePresets[val('projectPurpose')]||basePresets.etc;let screens={mainScreens:0,pcLow:0,pcMid:0,pcHigh:0,moCopy:0,moDesign:0,stateScreens:base.screens.stateScreens||0};let desktopTotal=(base.screens.mainScreens||0)+(base.screens.pcLow||0)+(base.screens.pcMid||0)+(base.screens.pcHigh||0);let channel=val('projectChannel');if(channel==='mobile_web'||channel==='native_app'){screens.mainScreens=base.screens.mainScreens||0;screens.moDesign=desktopTotal}else{screens={...screens,...base.screens};if(channel==='responsive_web')screens.moCopy=desktopTotal;if(channel==='admin')screens.moCopy=0}return {desc:base.desc,screens}}
+function presetLabel(){let p=presetForCurrent();let s=p.screens;let parts=[`메인 ${s.mainScreens||0}`,`PC 하 ${s.pcLow||0}`,`PC 중 ${s.pcMid||0}`,`PC 상 ${s.pcHigh||0}`,`MO Copy ${s.moCopy||0}`,`MO Design ${s.moDesign||0}`,`상태 ${s.stateScreens||0}`];return `${p.desc} · 기본 수량: ${parts.join(' / ')}`}
+function updatePresetDesc(){document.getElementById('presetDesc').textContent=presetLabel()}
+function applyPreset(){let p=presetForCurrent().screens;screenFields.forEach(k=>{form.elements[k].value=p[k]||0});calc()}
+function screensAreEmpty(){return screenFields.every(k=>num(k)===0)}
+function conceptCostRate(){let r=0;let count=Math.max(1,num('conceptCount'));if(count>1)r+=(count-1)*.10;if(val('conceptDepth')==='tone')r+=.06;if(val('conceptDepth')==='concept')r+=.16;if(val('refLevel')==='brand')r+=.04;if(val('refLevel')==='campaign')r+=.10;return r}
+function conceptDays(){let d=0;let count=Math.max(1,num('conceptCount'));if(count>1)d+=(count-1)*.8;if(val('conceptDepth')==='tone')d+=.8;if(val('conceptDepth')==='concept')d+=1.5;if(val('refLevel')==='brand')d+=.5;if(val('refLevel')==='campaign')d+=1;return d}
+function scheduleLabel(days){if(days<=0)return '-';let min=Math.max(1,Math.ceil(days));let max=Math.max(min,Math.ceil(days*1.25));return `${min}~${max}영업일`}
+function calendarLabel(days){let max=Math.ceil(days*1.25);if(max<=3)return '약 1주 이내';if(max<=5)return '약 1주';if(max<=10)return '약 2주';if(max<=15)return '약 3주';if(max<=20)return '약 4주';return '약 '+Math.ceil(max/5)+'주';}
+function updateScopeBox(){let p=pkg();document.getElementById('scopeDesc').innerHTML=`<p>· ${p.desc}</p><p>· 자료 상태 보정은 작게 적용합니다. 실제 단가 차이는 작업자 경력 보정에서 별도로 계산합니다.</p>`;document.getElementById('scopeStatus').textContent=p.status;document.getElementById('scopeRate').textContent=Math.round(p.costRate*100)+'%';document.getElementById('scopeDayRate').textContent=`+${Math.round(p.dayRate*100)}% / 최소 ${p.minDays}일`;document.getElementById('scopeIncluded').textContent=p.included}
+function calc(){updateScopeBox();updatePresetDesc();let rows=[...screenRows(),...aiRows()];let subtotal=rows.reduce((a,b)=>a+b.amount,0);let baseDays=rows.reduce((a,b)=>a+b.days,0);let p=pkg();let c=career();let cMode=careerMode();let cRate=c[cMode]||0;let careerFee=subtotal*cRate;let scopeFee=subtotal*p.costRate;let scopeDays=Math.max(baseDays*p.dayRate,p.minDays);let conceptRate=conceptCostRate();let cDays=conceptDays();let adjustedBase=subtotal+careerFee+scopeFee;let conceptFee=adjustedBase*conceptRate;let deadlineRate=Number(val('deadline')||0);let workingDays=baseDays+scopeDays+cDays;let deadlineFee=(adjustedBase+conceptFee)*deadlineRate;let beforeVat=adjustedBase+conceptFee+deadlineFee;let vat=val('vat')==='yes'?beforeVat*.1:0;let grand=beforeVat+vat;let deposit=grand*(num('depositRate')||50)/100;let balance=grand-deposit;let issue=val('issueDate')||today();let vd=num('validDays')||14;let d=new Date(issue);d.setDate(d.getDate()+vd);
+ document.getElementById('qNo').textContent='QT-'+issue.replaceAll('-','')+'-DESIGN';document.getElementById('qDate').textContent='견적일 '+issue;document.getElementById('qValid').textContent='유효기간 '+d.toISOString().slice(0,10);
+ document.getElementById('sProject').textContent=val('projectName')||'-';document.getElementById('sType').textContent=projectTypeLabel();document.getElementById('sSchedule').textContent=scheduleLabel(workingDays);document.getElementById('sTotal').textContent=won(grand);
+ document.getElementById('qRows').innerHTML=rows.length?rows.map(r=>`<tr><td>${esc(r.label)} <span class="pill">${r.days.toFixed(1)}일</span></td><td class="num">${r.qty}${r.unit}</td><td class="num">${won(r.rate)}</td><td class="num">${won(r.amount)}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">화면 수량을 입력하세요.</td></tr>';
+ document.getElementById('subtotal').textContent=won(subtotal);document.getElementById('careerFee').textContent=`${c.label} ${Math.round(cRate*100)}% / ${won(careerFee)}`;document.getElementById('scopeFee').textContent=Math.round(p.costRate*100)+'% / '+won(scopeFee);document.getElementById('conceptFee').textContent=Math.round(conceptRate*100)+'% / '+won(conceptFee);document.getElementById('deadlineFee').textContent=Math.round(deadlineRate*100)+'% / '+won(deadlineFee);document.getElementById('vatFee').textContent=won(vat);document.getElementById('grandTotal').textContent=won(grand);document.getElementById('deposit').textContent=won(deposit);document.getElementById('balance').textContent=won(balance);
+ const conceptMap={same:'동일 구조 베리에이션',tone:'다른 톤앤매너',concept:'완전 다른 콘셉트'};const refMap={normal:'일반',brand:'브랜드/대기업급',campaign:'캠페인/제안용 고퀄'};
+ document.getElementById('scheduleTerms').innerHTML=[`· 예상 작업일: ${scheduleLabel(workingDays)} / 권장 캘린더 기간: ${calendarLabel(workingDays)}`,`· 화면·AI 리소스 기본 일정: ${baseDays.toFixed(1)}영업일`, `· 통합 범위 추가 일정: ${scopeDays.toFixed(1)}영업일`, `· 시안/레퍼런스 추가 일정: ${cDays.toFixed(1)}영업일`, `· 일정 조건: ${document.querySelector('[name="deadline"] option:checked').textContent}`, `· 기본 페이지 세트 이후 화면, 상태값, AI 리소스가 추가되면 비용과 일정은 함께 증가합니다.`, `· 일정이 짧아질수록 검토·제작 시간이 압축되므로 비용이 상승합니다.`].map(x=>`<p>${x}</p>`).join('');
+ document.getElementById('scopeTerms').innerHTML=[`· 제작 채널: ${esc(channelLabels[val('projectChannel')]||'-')}`,`· 사이트 유형 / 목적 화면: ${esc(purposeLabels[val('projectPurpose')]||'-')}`,`· 유형별 기본 페이지 세트: ${esc(presetLabel())}`,`· 통합 작업 범위: ${p.name}`,`· 견적 상태: ${p.status} — ${p.desc}`,`· 작업자 경력: ${c.label} / ${c.desc} / ${Math.round(cRate*100)}% 보정`, `· 시안 기준: ${num('conceptCount')}안 / ${conceptMap[val('conceptDepth')]} / 레퍼런스 ${refMap[val('refLevel')]}`,`· AI 리소스: 이미지 ${num('aiImageCount')}컷 / 검수·보정 ${num('aiReviewHours')}시간 / 툴·크레딧 ${won(num('aiToolCost'))}`,`· 제작 채널은 디바이스와 제작 환경만 선택합니다. 사이트 성격과 화면 목적은 디비컷식 참고 분류를 기준으로 별도 구분합니다.`,`· 작업 패키지의 비용 보정은 자료 상태에 따른 소폭 보정이며, 경력·숙련도·책임 범위는 경력 보정으로 분리 산정합니다.`, `· 모바일 범위는 MO Copy와 MO Design으로 분리 산정합니다. '반응형 포함'이라는 포괄 표현은 사용하지 않습니다.`,`· AI 이미지·카피·코드 초안 활용은 생성, 선별, 검수, 보정, 상업 사용 가능성 확인이 필요한 별도 리소스 운영 범위입니다.`].map(x=>`<p>${x}</p>`).join('');
+ document.getElementById('revisionTerms').innerHTML=[`· 기본 수정은 취합 피드백 기준 ${num('revisionIncluded')}회까지 포함합니다.`,`· 시안 전달 후 피드백 기한은 ${num('feedbackDays')}일 이내입니다. 피드백 지연 시 납품 일정은 자동 연장됩니다.`,`· ${num('bulkIssueLimit')}개 이상 이슈, 케이스 누락, 상태값 추가, 화면 추가는 대량 수정/검수 또는 신규 작업으로 산정합니다.`,`· 방향성 전면 변경, 정보 구조 변경, 확정 후 재수정은 별도 견적입니다.`,`· 후속 협업 가능성과 별개로 본 견적은 현재 확정 범위만 기준으로 산정합니다.`].map(x=>`<p>${x}</p>`).join('');
+ document.getElementById('exclusionsOut').innerHTML=exclusions.map(x=>`<p>· ${x}</p>`).join('');document.getElementById('excludedList').innerHTML=exclusions.map(x=>`<p>· ${x}</p>`).join('');document.getElementById('memoOut').textContent=val('memo')||'본 견적은 디자인 산출물 기준이며, 개발/퍼블리싱/서버/운영/유지보수는 포함하지 않습니다.';
+}
+function fillSample(){form.projectName.value='웹사이트 리뉴얼 디자인';form.clientName.value='다인기획';form.designerName.value='오경준 / Design Studio';form.issueDate.value=today();form.validDays.value=14;form.projectChannel.value='responsive_web';form.projectPurpose.value='corporate';form.scopePackage.value='structure_planning';form.careerGrade.value='mid';form.careerMode.value='mid';applyPreset();form.aiImageCount.value=6;form.aiReviewHours.value=2;form.aiToolCost.value=30000;form.conceptCount.value=1;form.conceptDepth.value='same';form.refLevel.value='normal';form.revisionIncluded.value=2;form.bulkIssueLimit.value=20;form.feedbackDays.value=3;form.deadline.value='0';form.depositRate.value=50;form.vat.value='no';form.memo.value='유형별 기본 페이지 세트 기준입니다. 기본 세트 이후 화면 추가, AI 리소스 추가, 기획/화면 수 변경 시 견적과 일정은 재산정됩니다.';calc()}
+form.issueDate.value=today();document.getElementById('sampleBtn').addEventListener('click',fillSample);document.getElementById('presetBtn').addEventListener('click',applyPreset);document.getElementById('resetBtn').addEventListener('click',()=>{form.reset();form.issueDate.value=today();form.validDays.value=14;form.careerGrade.value='mid';form.careerMode.value='mid';form.conceptCount.value=1;form.revisionIncluded.value=2;form.bulkIssueLimit.value=20;form.feedbackDays.value=3;form.depositRate.value=50;calc()});document.getElementById('printBtn').addEventListener('click',()=>window.print());form.projectPurpose.addEventListener('change',()=>{if(screensAreEmpty())applyPreset()});form.projectChannel.addEventListener('change',()=>{if(screensAreEmpty())applyPreset()});form.addEventListener('input',calc);form.addEventListener('change',calc);calc();
+</script>
+</body>
+</html>

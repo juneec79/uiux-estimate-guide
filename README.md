@@ -4,6 +4,8 @@
 
 ## Files
 
+- `index.html`  
+  GitHub Pages 공개용 메인 파일
 - `ai-project-guide.html`  
   최종 가이드 HTML 문서
 - `quote-generator.html`  
@@ -17,7 +19,13 @@
 
 ## Preview
 
-브라우저에서 `quote-generator.html` 또는 `ai-project-guide.html` 파일을 열면 바로 확인할 수 있습니다.
+브라우저에서 `index.html`, `quote-generator.html` 또는 `ai-project-guide.html` 파일을 열면 바로 확인할 수 있습니다.
+
+GitHub Pages 공개 주소:
+
+```text
+https://juneec79.github.io/uiux-estimate-guide/
+```
 
 ## GitHub Upload
 
