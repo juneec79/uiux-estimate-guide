@@ -6,6 +6,10 @@
 
 - `ai-project-guide.html`  
   최종 가이드 HTML 문서
+- `quote-generator.html`  
+  자동 견적서 발행 도구
+- `quote-generator-design-schedule-final.html`  
+  디자인 견적·일정 산정서 최종 HTML
 - `studioblank-DESIGN.md`  
   참고 디자인 시스템 문서
 - `578bfc758d8e21f36ba61bec7bc76c3f.jpg`  
@@ -13,7 +17,7 @@
 
 ## Preview
 
-브라우저에서 `ai-project-guide.html` 파일을 열면 바로 확인할 수 있습니다.
+브라우저에서 `quote-generator.html` 또는 `ai-project-guide.html` 파일을 열면 바로 확인할 수 있습니다.
 
 ## GitHub Upload
 
