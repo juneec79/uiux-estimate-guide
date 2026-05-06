@@ -29,9 +29,8 @@ https://juneec79.github.io/uiux-estimate-guide/
 
 ## GitHub Upload
 
-GitHub에서 빈 저장소를 만든 뒤 아래 명령으로 업로드할 수 있습니다.
+최신 작업본을 GitHub와 공개 페이지에 함께 반영하려면 아래 명령을 실행합니다.
 
 ```bash
-git remote add origin https://github.com/YOUR_ACCOUNT/uiux-estimate-guide.git
-git push -u origin main
+./publish-latest.sh
 ```
